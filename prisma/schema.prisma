@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider   = "prisma-client"
+  output     = "../generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String  @id @default(uuid())
+  username String  @unique
+  email    String  @unique
+  password String
+  admin    Boolean @default(false)
+
+  posts    Post[]
+  comments Comment[]
+
+  @@index([username])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  sid       String   @unique
+  data      String   @db.Text
+  expiresAt DateTime
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // User relationship
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  // Comments
+  comments Comment[]
+
+  @@unique([ownerId, name])
+  @@index([ownerId])
+}
+
+model Comment {
+  id      String @id @default(uuid())
+  message String
+
+  uploadedAt DateTime @default(now())
+
+  // User relationship 
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  // Post relationship
+  postId String
+  Post   Post   @relation(fields: [id], references: [id])
+
+  @@index([postId])
+  @@index([ownerId])
+}
