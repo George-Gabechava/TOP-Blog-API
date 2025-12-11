@@ -14,9 +14,9 @@ datasource db {
 model User {
   id       String  @id @default(uuid())
   username String  @unique
-  email    String  @unique
   password String
   admin    Boolean @default(false)
+  email    String? @unique
 
   posts    Post[]
   comments Comment[]
@@ -34,8 +34,13 @@ model Session {
 model Post {
   id        String   @id @default(uuid())
   name      String
+  message   String
+  published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Post tags
+  tags String[]
 
   // User relationship
   ownerId String

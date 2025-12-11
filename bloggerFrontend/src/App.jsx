@@ -1,9 +1,8 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import express from "express";
-import "dotenv/config";
 import "./App.css";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -30,6 +29,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <Footer />
     </>
   );
 }
