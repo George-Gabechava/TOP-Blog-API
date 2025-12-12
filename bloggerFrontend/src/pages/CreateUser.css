@@ -1,0 +1,15 @@
+#CreateUserForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 66vw;
+  gap: 5px;
+  margin: 10px;
+  border: solid 1px gray;
+  border-radius: 40px;
+}
+
+#LogInContainer {
+  display: flex;
+  justify-content: center;
+}
