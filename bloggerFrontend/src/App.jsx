@@ -1,14 +1,19 @@
+// Set up
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import dotenv from "dotenv";
+
+// Components
 import LogInPanel from "./components/LogInPanel.jsx";
 import AdminPanel from "./components/AdminPanel.jsx";
 
 import LogIn from "./pages/LogIn.jsx";
 import Blogs from "./pages/Blogs.jsx";
-import CreateUser from "./pages/CreateUser.jsx";
+import SignUp from "./pages/SignUp.jsx";
 
 import Footer from "./components/Footer.jsx";
 
+// Assets
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -27,7 +32,7 @@ function App() {
     content = <Blogs />;
   } else {
     panel = <LogInPanel />;
-    content = <LogIn />;
+    content = <h3>Log in as a Blogger to edit blogs.</h3>;
   }
 
   return (
@@ -43,13 +48,14 @@ function App() {
           </a>
         </div>
 
+        {content}
+
         {/* Routes for content swapping */}
         <Routes>
           <Route path="/login" element={<LogIn />} />
-          <Route path="/createUser" element={<CreateUser />} />
+          <Route path="/signUp" element={<SignUp />} />
         </Routes>
         {/* Show Blogs if authorized */}
-        {content}
 
         <Footer />
       </div>

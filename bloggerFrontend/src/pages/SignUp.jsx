@@ -1,9 +1,9 @@
-import "./CreateUser.css";
+import "./SignUp.css";
 
-function CreateUser() {
+function SignUp() {
   return (
     <div id="LogInContainer">
-      <form id="CreateUserForm">
+      <form id="SignUpForm">
         <label for="username">
           <b>Username</b>
         </label>
@@ -45,4 +45,4 @@ function CreateUser() {
   );
 }
 
-export default CreateUser;
+export default SignUp;

@@ -1,11 +1,21 @@
-// import uuidv4 from "uuid/v4";
+import uuidv4 from "uuid/v4";
+import { Router } from "express";
 
-// router.get("/", (req, res) => {
-//   return res.send(Object.values(req.context.models.users));
-// });
+const router = Router();
 
-// router.get("/", (req, res) => {
-//   return res.send(req.context.models.users[req.params.userId]);
-// });
+// Create User Route
+router.post("/", (req, res) => {
+  const id = uuidv4();
+  const user = {
+    id,
+    username: req.body.username,
+    password: req.body.text,
+    userId: req.context.me.id,
+  };
+
+  console.log(message);
+
+  return res.send(message);
+});
 
 // export default router;

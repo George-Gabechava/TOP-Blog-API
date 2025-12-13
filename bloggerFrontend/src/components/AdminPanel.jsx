@@ -4,6 +4,7 @@ function AdminPanel() {
   return (
     <div id="AdminPanel">
       <div id="logInButtons">
+        {/* Make Components?: */}
         <button>Home Page Icon</button>
         <button>Button/Mobile Drop</button>
       </div>
