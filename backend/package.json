@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "app.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,10 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^5.2.1",
-    "pg": "^8.16.3",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.10.1"
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
