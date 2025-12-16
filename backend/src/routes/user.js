@@ -1,13 +1,13 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import prismaPkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const router = Router();
-
-// Prisma Client Engine
+const { PrismaClient } = prismaPkg;
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
+
+const router = Router();
 
 // Sign Up
 router.post("/signUp", async (req, res) => {
