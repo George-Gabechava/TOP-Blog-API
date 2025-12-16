@@ -9,6 +9,7 @@ const router = Router();
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
+// Sign Up
 router.post("/signUp", async (req, res) => {
   try {
     const { username, email, password, confirmPassword } = req.body || {};
