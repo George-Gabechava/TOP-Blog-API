@@ -9,7 +9,7 @@ const validateSignUp = [
     .withMessage("Username must be at least 3 characters.")
     .escape(),
   body("password")
-    .isLength({ min: 10 })
+    .isLength({ min: 6 })
     .withMessage("Password must be at least 10 characters."),
   body("confirm")
     .custom((value, { req }) => {
@@ -26,5 +26,26 @@ async function signUp(req, res) {
     return errors.array();
   }
 
-  try { }
+  try {
+    const {id, username, email, password} = req.body;
+
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { username: req.user },
+    });
+
+    if (existingUser) {
+      let errors = {errors: [{ msg: "Username already exists. Please choose another." }] }
+      return JSON.stringify(errors);
+    }
+    const createUser = await prisma.user.create({
+      data: {
+        id: id,
+        username: username,
+        email: email, 
+        password: password
+      }
+    }) 
+    return JSON.stringify("success");
+  }
 }

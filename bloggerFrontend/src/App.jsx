@@ -1,7 +1,6 @@
 // Set up
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import dotenv from "dotenv";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Components
 import LogInPanel from "./components/LogInPanel.jsx";

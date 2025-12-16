@@ -6,15 +6,14 @@ function LogInPanel() {
   return (
     <div id="LogInPanel">
       <div id="logInButtons">
-        {/* Make Components?: */}
         <button>Home Page Icon</button>
         <button>Button/Mobile Drop</button>
       </div>
       <div id="logInButtons">
         <Link to="/signUp">
-          <button>Sign Up</button>
+          <button>Create Account</button>
         </Link>
-        <Link to="/logIn">
+        <Link to="/login">
           <button>Log In</button>
         </Link>
       </div>

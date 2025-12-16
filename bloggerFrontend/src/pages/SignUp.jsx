@@ -1,10 +1,14 @@
 import "./SignUp.css";
-
 function SignUp() {
   return (
     <div id="LogInContainer">
-      <form id="SignUpForm">
-        <label for="username">
+      <form
+        id="SignUpForm"
+        method="post"
+        action="http://localhost:5000/api/users/signUp"
+        acceptCharset="UTF-8"
+      >
+        <label htmlFor="username">
           <b>Username</b>
         </label>
         <input
@@ -14,12 +18,12 @@ function SignUp() {
           required
         />
 
-        <label for="email">
+        <label htmlFor="email">
           <b>Email</b>
         </label>
         <input type="email" placeholder="Enter Email" name="email" required />
 
-        <label for="password">
+        <label htmlFor="password">
           <b>Password</b>
         </label>
         <input
@@ -29,7 +33,7 @@ function SignUp() {
           required
         />
 
-        <label for="confirmPassword">
+        <label htmlFor="confirmPassword">
           <b>Confirm Password</b>
         </label>
         <input
