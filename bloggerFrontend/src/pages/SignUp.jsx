@@ -1,11 +1,15 @@
 import "./SignUp.css";
+
 function SignUp() {
+  const backendBase =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  const signUpAction = `${backendBase}/api/users/signUp`;
   return (
     <div id="LogInContainer">
       <form
         id="SignUpForm"
         method="post"
-        action="http://localhost:5000/api/users/signUp"
+        action={signUpAction}
         acceptCharset="UTF-8"
       >
         <label htmlFor="username">
