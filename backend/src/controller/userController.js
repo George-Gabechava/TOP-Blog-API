@@ -2,7 +2,7 @@ import { body, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 
 // Validate New User Sign Up
-const validateSignUp = [
+export const validateSignUp = [
   body("username")
     .trim()
     .isLength({ min: 3 })
@@ -27,7 +27,7 @@ async function signUp(req, res) {
   }
 
   try {
-    const {id, username, email, password} = req.body;
+    const { id, username, email, password } = req.body;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -35,17 +35,28 @@ async function signUp(req, res) {
     });
 
     if (existingUser) {
-      let errors = {errors: [{ msg: "Username already exists. Please choose another." }] }
+      let errors = {
+        errors: [{ msg: "Username already exists. Please choose another." }],
+      };
       return JSON.stringify(errors);
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const createUser = await prisma.user.create({
       data: {
         id: id,
         username: username,
-        email: email, 
-        password: password
-      }
-    }) 
-    return JSON.stringify("success");
+        email: email,
+        password: hashedPassword,
+      },
+    });
+    const frontendBase = process.env.FRONTEND_URL || "http://localhost:4173";
+    return res.redirect(303, `${frontendBase}/login`);
+  } catch (err) {
+    //  Redirect to /login after successful signUp.
+
+    console.error("SignUp error:", err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
