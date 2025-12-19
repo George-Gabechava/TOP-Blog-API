@@ -1,8 +1,15 @@
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 
+import prismaPkg from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const { PrismaClient } = prismaPkg;
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const prisma = new PrismaClient({ adapter });
+
 // Validate New User Sign Up
-export const validateSignUp = [
+const validateSignUp = [
   body("username")
     .trim()
     .isLength({ min: 3 })
@@ -10,8 +17,8 @@ export const validateSignUp = [
     .escape(),
   body("password")
     .isLength({ min: 6 })
-    .withMessage("Password must be at least 10 characters."),
-  body("confirm")
+    .withMessage("Password must be at least 6 characters."),
+  body("confirmPassword")
     .custom((value, { req }) => {
       return value === req.body.password;
     })
@@ -20,10 +27,10 @@ export const validateSignUp = [
 
 // Sign Up
 async function signUp(req, res) {
-  const errors = validationResult;
+  const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return errors.array();
+    return res.status(400).json({ errors });
   }
 
   try {
@@ -31,19 +38,18 @@ async function signUp(req, res) {
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { username: req.user },
+      where: { username },
     });
 
     if (existingUser) {
-      let errors = {
-        errors: [{ msg: "Username already exists. Please choose another." }],
-      };
-      return JSON.stringify(errors);
+      return res
+        .status(400)
+        .json({ error: "Username already exists. Please choose another." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const createUser = await prisma.user.create({
+    await prisma.user.create({
       data: {
         id: id,
         username: username,
@@ -60,3 +66,5 @@ async function signUp(req, res) {
     return res.status(500).json({ error: "Internal server error" });
   }
 }
+
+export default { validateSignUp, signUp };
