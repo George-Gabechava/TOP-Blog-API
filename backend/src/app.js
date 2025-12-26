@@ -3,9 +3,21 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
 
-// Middleware
+// Express setup
 const app = express();
-app.use(cors());
+
+// CORS setup
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:4173";
+const corsOptions = {
+  origin: FRONTEND_URL,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  // 204 code needed for some legacy browsers
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

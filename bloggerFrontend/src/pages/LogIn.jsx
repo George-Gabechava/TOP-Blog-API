@@ -3,6 +3,7 @@ import "./LogIn.css";
 function LogIn() {
   return (
     <div id="LogInContainer">
+      <h2>Log In</h2>
       <form id="LogInForm">
         <label for="username">
           <b>Username</b>

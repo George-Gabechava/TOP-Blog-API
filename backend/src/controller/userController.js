@@ -57,11 +57,9 @@ async function signUp(req, res) {
         password: hashedPassword,
       },
     });
-    const frontendBase = process.env.FRONTEND_URL || "http://localhost:4173";
-    return res.redirect(303, `${frontendBase}/login`);
+    // Respond with JSON and navigate to /login.
+    return res.status(201).json({ success: true, redirectTo: "/login" });
   } catch (err) {
-    //  Redirect to /login after successful signUp.
-
     console.error("SignUp error:", err);
     return res.status(500).json({ error: "Internal server error" });
   }
