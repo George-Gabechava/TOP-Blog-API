@@ -28,16 +28,24 @@ function SignUp() {
       }
 
       // If fail, display error
-      let msg = `Sign up failed (${res.status})`;
+      let message = `Sign up failed (${res.status})`;
       try {
         const data = await res.json();
-        msg = data.error;
-      } catch (error) {
-        console.log(error);
+        console.log("data", data);
+        if (data.errors.errors) {
+          if (data.errors.errors.length > 1) {
+            const messages = data.errors.errors.map((e) => e.msg);
+            message = messages;
+          }
+        } else {
+          message = data.error || data.errors[0];
+        }
+      } catch (err) {
+        console.log(err);
       }
-      setError(msg);
-    } catch (error2) {
-      setErrorMessage("Network error. Please try again.");
+      setErrorMessage(message);
+    } catch (err2) {
+      setErrorMessage("Network error. Please try again. ");
     }
   }
 

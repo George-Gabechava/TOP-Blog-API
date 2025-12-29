@@ -13,24 +13,25 @@ const validateSignUp = [
   body("username")
     .trim()
     .isLength({ min: 3 })
-    .withMessage("Username must be at least 3 characters.")
+    .withMessage("Username must be at least 3 characters. ")
     .escape(),
   body("password")
     .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters."),
+    .withMessage("Password must be at least 6 characters. "),
   body("confirmPassword")
     .custom((value, { req }) => {
       return value === req.body.password;
     })
-    .withMessage("Passwords do not match."),
+    .withMessage("Passwords do not match. "),
 ];
 
 // Sign Up
 async function signUp(req, res) {
-  const errors = validationResult(req);
+  const result = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors });
+  if (!result.isEmpty()) {
+    const messages = result.array().map((e) => e.msg);
+    return res.status(400).json({ errors: messages });
   }
 
   try {
@@ -44,7 +45,18 @@ async function signUp(req, res) {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: "Username already exists. Please choose another." });
+        .json({ errors: ["Username already exists. Please choose another. "] });
+    }
+
+    // Check if email already exists
+    const existingEmail = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingEmail) {
+      return res
+        .status(400)
+        .json({ errors: ["Email already in use. Please choose another. "] });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -61,7 +73,7 @@ async function signUp(req, res) {
     return res.status(201).json({ success: true, redirectTo: "/login" });
   } catch (err) {
     console.error("SignUp error:", err);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ errors: ["Internal server error. "] });
   }
 }
 
