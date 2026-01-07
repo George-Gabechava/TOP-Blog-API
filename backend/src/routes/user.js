@@ -6,8 +6,10 @@ const router = Router();
 // Sign Up
 router.post("/signUp", userController.validateSignUp, userController.signUp);
 
-router.get("/logOut", function (req, res, next) {
-  // code
-});
+// Log In
+router.post("/logIn", userController.logIn);
+
+// Log Out
+router.post("/logOut", userController.logOut);
 
 export default router;

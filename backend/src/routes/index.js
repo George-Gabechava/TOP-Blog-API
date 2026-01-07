@@ -1,9 +1,9 @@
-import session from "./session.js";
+import blog from "./blog.js";
 import user from "./user.js";
 import post from "./post.js";
 
 export default {
-  session,
+  blog,
   user,
   post,
 };

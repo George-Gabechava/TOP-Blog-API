@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
+import blogRouter from "./routes/blog.js";
 
 // Express setup
 const app = express();
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 
 // API routes
 app.use("/api/users", userRouter);
+app.use("/api/blog", blogRouter);
 
 app.listen(PORT, function () {
   console.log(`Backend listening on port ${PORT}.`);

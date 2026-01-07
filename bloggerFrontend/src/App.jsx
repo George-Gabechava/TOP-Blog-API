@@ -27,10 +27,10 @@ function App() {
 
   // Update Navigation Bar
   if (isBlogger === true) {
-    panel = <AdminPanel />;
+    panel = <AdminPanel onLogout={() => setIsBlogger(false)} />;
     content = <Blogs />;
   } else {
-    panel = <LogInPanel />;
+    panel = <LogInPanel onLogout={() => setIsBlogger(false)} />;
     content = <h3>Log in as a Blogger to edit blogs.</h3>;
   }
 
@@ -51,7 +51,14 @@ function App() {
 
         {/* Routes for content swapping */}
         <Routes>
-          <Route path="/login" element={<LogIn />} />
+          <Route
+            path="/login"
+            element={
+              <LogIn
+                onAuthChange={(isAdmin) => setIsBlogger(Boolean(isAdmin))}
+              />
+            }
+          />
           <Route path="/signUp" element={<SignUp />} />
         </Routes>
         {/* Show Blogs if authorized */}

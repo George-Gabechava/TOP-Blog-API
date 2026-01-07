@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Router } from "express";
+import blogController from "../controller/blogController.js";
 
 const router = Router();
 
@@ -19,9 +20,10 @@ router.post("/", (req, res) => {
   return res.send(message);
 });
 
+// Get Blogs
+router.get("/", blogController.getPosts);
+
 // Delete Post Route
-router.delete("/:postId", (req, res) => {
-  // code
-});
+router.delete("/:postId", blogController.deletePost);
 
 export default router;

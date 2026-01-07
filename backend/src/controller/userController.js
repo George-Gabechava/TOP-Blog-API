@@ -1,5 +1,6 @@
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import prismaPkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -70,11 +71,63 @@ async function signUp(req, res) {
       },
     });
     // Respond with JSON and navigate to /login.
-    return res.status(201).json({ success: true, redirectTo: "/login" });
+    return res.status(201).json({ success: true });
   } catch (err) {
     console.error("SignUp error:", err);
     return res.status(500).json({ errors: ["Internal server error. "] });
   }
 }
 
-export default { validateSignUp, signUp };
+// Log In
+async function logIn(req, res) {
+  try {
+    const { username, password } = req.body;
+    const user = await prisma.user.findUnique({ where: { username } });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ errors: ["Invalid username or password."] });
+    }
+
+    const pass = await bcrypt.compare(password, user.password);
+    if (!pass) {
+      return res
+        .status(401)
+        .json({ errors: ["Invalid username or password."] });
+    }
+
+    const token = jwt.sign(
+      { username: user.username, admin: user.admin },
+      process.env.JWT_SECRET || "shhhhh",
+      { expiresIn: "4d" }
+    );
+
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      // Cookie maxAge currently 1 day
+      maxAge: 60 * 60 * 1000 * 24 * 1,
+      path: "/",
+    });
+    // On success, redirect and send blogger status.
+    return res.status(200).json({ success: true, admin: user.admin });
+  } catch (err) {
+    console.error("Log In Error", err);
+    return res.status(500).json({ errors: ["Internal server error. "] });
+  }
+}
+
+// Log Out
+function logOut(req, res) {
+  try {
+    res.clearCookie("auth_token", {
+      httpOnly: true,
+      path: "/",
+    });
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Log Out Error", err);
+    return res.status(500).json({ errors: ["Internal server error. "] });
+  }
+}
+
+export default { validateSignUp, signUp, logIn, logOut };
