@@ -24,6 +24,7 @@ function LogIn({ onAuthChange }) {
         const data = await res.json();
         if (data.token) localStorage.setItem("auth_token", data.token);
         onAuthChange(Boolean(data.admin));
+        window.location.assign("/");
         return;
       } else {
         const data = await res.json().catch(() => ({}));

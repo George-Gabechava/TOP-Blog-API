@@ -22,18 +22,23 @@ let panel;
 let content;
 
 function App() {
-  // Authorization comes from Losgin.jsx via onAuthChange
+  // Authorization from Login.jsx via onAuthChange
   const [isBlogger, setIsBlogger] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   function handleAuthChange(isAdmin) {
     setIsBlogger(Boolean(isAdmin));
+    setIsLoggedIn(Boolean(localStorage.getItem("auth_token")));
   }
 
-  // Auth on app load so refresh preserves state
+  // Authorization on app load so refresh preserves state
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
-    if (!token) return;
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+    setIsLoggedIn(true);
     const backendBase =
       import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
     (async () => {
@@ -54,13 +59,21 @@ function App() {
     })();
   }, []);
 
-  // Update Navigation Bar
+  // Log state changes with fresh values (avoids stale closure logs)
+  useEffect(() => {
+    console.log("App state", { isBlogger, isLoggedIn });
+  }, [isBlogger, isLoggedIn]);
+
+  // Update Navigation Bar depending on user permissions.
   if (isBlogger === true) {
     panel = <AdminPanel onAuthChange={handleAuthChange} />;
-    content = <Blogs onAuthChange={handleAuthChange} />;
+    content = <h3>You are logged in as a blogger.</h3>;
+  } else if (isLoggedIn === true) {
+    panel = <LogInPanel onAuthChange={handleAuthChange} />;
+    content = <h3>You do not have permission to blog.</h3>;
   } else {
     panel = <LogInPanel onAuthChange={handleAuthChange} />;
-    content = <h3>Log in as a Blogger to edit blogs.</h3>;
+    content = <h3>You are not logged in.</h3>;
   }
 
   return (
@@ -85,6 +98,10 @@ function App() {
             element={<LogIn onAuthChange={handleAuthChange} />}
           />
           <Route path="/signUp" element={<SignUp />} />
+          <Route
+            path="/blogs"
+            element={<Blogs onAuthChange={handleAuthChange} />}
+          />
         </Routes>
         {/* Show Blogs if authorized */}
 

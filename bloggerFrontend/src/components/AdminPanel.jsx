@@ -1,20 +1,25 @@
 import "./AdminPanel.css";
+import { Link } from "react-router-dom";
 
 function AdminPanel({ onAuthChange }) {
   function handleLogout() {
     localStorage.removeItem("auth_token");
     onAuthChange(false);
+    window.location.assign("/");
   }
   return (
     <div id="AdminPanel">
       <div id="logInButtons">
         {/* Make Components?: */}
-        <button>Home Page Icon</button>
-        <button>Button/Mobile Drop</button>
+        <Link to="/">
+          <button>*Home Page Icon</button>
+        </Link>
       </div>
 
       <div id="logInButtons">
-        <button>Create Post</button>
+        <Link to="/blogs">
+          <button>Blogs</button>
+        </Link>
         <button onClick={handleLogout}>Log Out</button>
       </div>
     </div>

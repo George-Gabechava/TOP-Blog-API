@@ -6,6 +6,7 @@ function LogInPanel({ onAuthChange }) {
   function handleLogout() {
     localStorage.removeItem("auth_token");
     onAuthChange(false);
+    window.location.assign("/");
   }
 
   return (
