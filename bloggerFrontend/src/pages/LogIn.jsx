@@ -18,12 +18,14 @@ function LogIn({ onAuthChange }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-        credentials: "include",
       });
 
       if (res.ok) {
         const data = await res.json();
         console.log("data", data);
+        if (data?.token) {
+          localStorage.setItem("auth_token", data.token);
+        }
         onAuthChange(Boolean(data?.admin));
         // Redirect to home after login
         // window.location.assign("/");
@@ -50,6 +52,7 @@ function LogIn({ onAuthChange }) {
           placeholder="Enter Username"
           name="username"
           required
+          autocomplete="username"
         />
 
         <label for="password">
@@ -60,6 +63,7 @@ function LogIn({ onAuthChange }) {
           placeholder="Enter Password"
           name="password"
           required
+          autocomplete="password"
         />
 
         <button type="submit">Submit</button>

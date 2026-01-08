@@ -1,3 +1,4 @@
+//Prisma
 import prismaPkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -7,7 +8,8 @@ const prisma = new PrismaClient({ adapter });
 
 // if blogger, show all blogs
 async function getPosts(req, res) {
-  if (req.credentials.admin === "true") {
+  console.log(req.user);
+  if (req.user.admin === true) {
     const posts = await prisma.post.findMany();
     return res.status(200).json({ allPosts: posts });
   }

@@ -1,5 +1,5 @@
 // Set up
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Components
@@ -23,14 +23,20 @@ let content;
 
 function App() {
   // Update authorization
-  const [isBlogger, setIsBlogger] = useState(false);
+  const [isBlogger, setIsBlogger] = useState(
+    Boolean(localStorage.getItem("auth_token"))
+  );
+  useEffect(() => {
+    const tokenAuth = localStorage.getItem("auth_token");
+    setIsBlogger(Boolean(tokenAuth));
+  }, []);
 
   // Update Navigation Bar
   if (isBlogger === true) {
-    panel = <AdminPanel onLogout={() => setIsBlogger(false)} />;
+    panel = <AdminPanel />;
     content = <Blogs />;
   } else {
-    panel = <LogInPanel onLogout={() => setIsBlogger(false)} />;
+    panel = <LogInPanel />;
     content = <h3>Log in as a Blogger to edit blogs.</h3>;
   }
 
@@ -51,14 +57,7 @@ function App() {
 
         {/* Routes for content swapping */}
         <Routes>
-          <Route
-            path="/login"
-            element={
-              <LogIn
-                onAuthChange={(isAdmin) => setIsBlogger(Boolean(isAdmin))}
-              />
-            }
-          />
+          <Route path="/login" element={<LogIn />} />
           <Route path="/signUp" element={<SignUp />} />
         </Routes>
         {/* Show Blogs if authorized */}

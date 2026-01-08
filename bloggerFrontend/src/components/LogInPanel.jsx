@@ -2,24 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./LogInPanel.css";
 
-function LogInPanel({ onLogout = () => {} }) {
-  async function handleLogout() {
-    const backendBase =
-      import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-    try {
-      const res = await fetch(`${backendBase}/api/users/logOut`, {
-        method: "POST",
-        credentials: "include",
-      });
-      if (res.ok) {
-        onLogout(false);
-        // Redirect to login page after logout
-        window.location.assign("/login");
-      }
-    } catch (e) {
-      console.log(e);
-    }
+function LogInPanel() {
+  function handleLogout() {
+    localStorage.removeItem("auth_token");
+    window.location.assign("/login");
   }
+
   return (
     <div id="LogInPanel">
       <div id="logInButtons">

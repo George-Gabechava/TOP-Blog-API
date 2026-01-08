@@ -2,6 +2,7 @@ import { body, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+// Prisma
 import prismaPkg from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -102,32 +103,12 @@ async function logIn(req, res) {
       { expiresIn: "4d" }
     );
 
-    res.cookie("auth_token", token, {
-      httpOnly: true,
-      // Cookie maxAge currently 1 day
-      maxAge: 60 * 60 * 1000 * 24 * 1,
-      path: "/",
-    });
-    // On success, redirect and send blogger status.
-    return res.status(200).json({ success: true, admin: user.admin });
+    // Return JWT
+    return res.status(200).json({ success: true, admin: user.admin, token });
   } catch (err) {
     console.error("Log In Error", err);
     return res.status(500).json({ errors: ["Internal server error. "] });
   }
 }
 
-// Log Out
-function logOut(req, res) {
-  try {
-    res.clearCookie("auth_token", {
-      httpOnly: true,
-      path: "/",
-    });
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error("Log Out Error", err);
-    return res.status(500).json({ errors: ["Internal server error. "] });
-  }
-}
-
-export default { validateSignUp, signUp, logIn, logOut };
+export default { validateSignUp, signUp, logIn };

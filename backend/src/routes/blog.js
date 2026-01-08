@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Router } from "express";
 import blogController from "../controller/blogController.js";
+import passport from "../passportAuth.js";
 
 const router = Router();
 
@@ -21,9 +22,17 @@ router.post("/", (req, res) => {
 });
 
 // Get Blogs
-router.get("/", blogController.getPosts);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  blogController.getPosts
+);
 
 // Delete Post Route
-router.delete("/:postId", blogController.deletePost);
+router.delete(
+  "/:postId",
+  passport.authenticate("jwt", { session: false }),
+  blogController.deletePost
+);
 
 export default router;

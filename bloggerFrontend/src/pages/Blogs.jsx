@@ -6,9 +6,10 @@ function Blogs() {
       import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
     console.log("get Blogs");
     try {
+      const token = localStorage.getItem("auth_token");
       const posts = await fetch(`${backendBase}/api/blog`, {
         method: "GET",
-        credentials: "include",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       console.log("posts", posts);
     } catch (err) {

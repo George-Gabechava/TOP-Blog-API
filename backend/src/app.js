@@ -4,6 +4,7 @@ import cors from "cors";
 import userRouter from "./routes/user.js";
 import blogRouter from "./routes/blog.js";
 
+import passport from "./passportAuth.js";
 // Express setup
 const app = express();
 
@@ -21,6 +22,9 @@ app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Passport
+app.use(passport.initialize());
 
 // Set port
 const PORT = process.env.PORT || 5000;

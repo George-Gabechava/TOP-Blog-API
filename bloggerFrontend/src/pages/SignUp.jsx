@@ -61,12 +61,19 @@ function SignUp() {
           placeholder="Enter Username"
           name="username"
           required
+          autocomplete="username"
         />
 
         <label htmlFor="email">
           <b>Email</b>
         </label>
-        <input type="email" placeholder="Enter Email" name="email" required />
+        <input
+          type="email"
+          placeholder="Enter Email"
+          name="email"
+          required
+          autocomplete="email"
+        />
 
         <label htmlFor="password">
           <b>Password</b>
