@@ -111,4 +111,15 @@ async function logIn(req, res) {
   }
 }
 
-export default { validateSignUp, signUp, logIn };
+// Auth status
+function me(req, res) {
+  try {
+    const user = req.user;
+    return res.status(200).json({ username: user.username, admin: user.admin });
+  } catch (err) {
+    console.error("Log In Error", err);
+    return res.status(500).json({ errors: ["Internal server error."] });
+  }
+}
+
+export default { validateSignUp, signUp, logIn, me };

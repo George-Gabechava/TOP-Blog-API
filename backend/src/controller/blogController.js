@@ -8,7 +8,7 @@ const prisma = new PrismaClient({ adapter });
 
 // if blogger, show all blogs
 async function getPosts(req, res) {
-  console.log(req.user);
+  console.log("req user", req.user);
   if (req.user.admin === true) {
     const posts = await prisma.post.findMany();
     return res.status(200).json({ allPosts: posts });

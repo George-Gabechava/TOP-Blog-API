@@ -1,9 +1,9 @@
 import "./AdminPanel.css";
 
-function AdminPanel() {
+function AdminPanel({ onAuthChange }) {
   function handleLogout() {
     localStorage.removeItem("auth_token");
-    window.location.assign("/login");
+    onAuthChange(false);
   }
   return (
     <div id="AdminPanel">
@@ -15,7 +15,6 @@ function AdminPanel() {
 
       <div id="logInButtons">
         <button>Create Post</button>
-        <button>Edit Post</button>
         <button onClick={handleLogout}>Log Out</button>
       </div>
     </div>

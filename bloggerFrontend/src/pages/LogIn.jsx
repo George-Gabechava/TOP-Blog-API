@@ -22,21 +22,16 @@ function LogIn({ onAuthChange }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log("data", data);
-        if (data?.token) {
-          localStorage.setItem("auth_token", data.token);
-        }
-        onAuthChange(Boolean(data?.admin));
-        // Redirect to home after login
-        // window.location.assign("/");
+        if (data.token) localStorage.setItem("auth_token", data.token);
+        onAuthChange(Boolean(data.admin));
         return;
       } else {
         const data = await res.json().catch(() => ({}));
         setErrorMessage(data.error || data.errors[0]);
       }
     } catch (err) {
-      console.log(err);
-      setErrorMessage(err || "Network error. Please try again. ");
+      console.error(err);
+      setErrorMessage("Network error. Please try again.");
     }
   }
 

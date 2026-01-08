@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./LogInPanel.css";
 
-function LogInPanel() {
+function LogInPanel({ onAuthChange }) {
   function handleLogout() {
     localStorage.removeItem("auth_token");
-    window.location.assign("/login");
+    onAuthChange(false);
   }
 
   return (

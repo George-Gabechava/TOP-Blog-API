@@ -22,21 +22,44 @@ let panel;
 let content;
 
 function App() {
-  // Update authorization
-  const [isBlogger, setIsBlogger] = useState(
-    Boolean(localStorage.getItem("auth_token"))
-  );
+  // Authorization comes from Losgin.jsx via onAuthChange
+  const [isBlogger, setIsBlogger] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  function handleAuthChange(isAdmin) {
+    setIsBlogger(Boolean(isAdmin));
+  }
+
+  // Auth on app load so refresh preserves state
   useEffect(() => {
-    const tokenAuth = localStorage.getItem("auth_token");
-    setIsBlogger(Boolean(tokenAuth));
+    const token = localStorage.getItem("auth_token");
+    if (!token) return;
+    const backendBase =
+      import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+    (async () => {
+      try {
+        const res = await fetch(`${backendBase}/api/users/me`, {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          setIsBlogger(false);
+          return;
+        }
+        const data = await res.json();
+        setIsBlogger(Boolean(data.admin));
+      } catch (err) {
+        console.error("auth bootstrap failed", err);
+      }
+    })();
   }, []);
 
   // Update Navigation Bar
   if (isBlogger === true) {
-    panel = <AdminPanel />;
-    content = <Blogs />;
+    panel = <AdminPanel onAuthChange={handleAuthChange} />;
+    content = <Blogs onAuthChange={handleAuthChange} />;
   } else {
-    panel = <LogInPanel />;
+    panel = <LogInPanel onAuthChange={handleAuthChange} />;
     content = <h3>Log in as a Blogger to edit blogs.</h3>;
   }
 
@@ -57,7 +80,10 @@ function App() {
 
         {/* Routes for content swapping */}
         <Routes>
-          <Route path="/login" element={<LogIn />} />
+          <Route
+            path="/login"
+            element={<LogIn onAuthChange={handleAuthChange} />}
+          />
           <Route path="/signUp" element={<SignUp />} />
         </Routes>
         {/* Show Blogs if authorized */}
