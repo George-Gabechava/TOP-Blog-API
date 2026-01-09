@@ -9,6 +9,7 @@ import AdminPanel from "./components/AdminPanel.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import Blogs from "./pages/Blogs.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import BlogDetail from "./pages/BlogDetail.jsx";
 
 import Footer from "./components/Footer.jsx";
 
@@ -101,6 +102,10 @@ function App() {
           <Route
             path="/blogs"
             element={<Blogs onAuthChange={handleAuthChange} />}
+          />
+          <Route
+            path="/blogDetail/:id"
+            element={<BlogDetail onAuthChange={handleAuthChange} />}
           />
         </Routes>
         {/* Show Blogs if authorized */}

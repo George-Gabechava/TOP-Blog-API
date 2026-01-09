@@ -1,11 +1,13 @@
 import "./Blogs.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Blogs({ onAuthChange }) {
+  const [posts, setPosts] = useState([]);
+
   async function getBlogs() {
     const backendBase =
       import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-    console.log("get Blogs");
     try {
       const token = localStorage.getItem("auth_token");
       // Check auth status
@@ -13,7 +15,6 @@ function Blogs({ onAuthChange }) {
         method: "GET",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-      console.log("myStatus", myStatus);
       onAuthChange(myStatus.ok);
       if (!myStatus.ok) {
         console.error("auth check failed", myStatus.status);
@@ -25,14 +26,8 @@ function Blogs({ onAuthChange }) {
         method: "GET",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-      console.log("posts status", res.status);
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        console.error("posts error", text);
-        return;
-      }
       const data = await res.json();
-      console.log("posts data", data);
+      setPosts(data.allPosts);
     } catch (err) {
       console.log(err);
     }
@@ -44,11 +39,20 @@ function Blogs({ onAuthChange }) {
     <div>
       <h1>Recent Blogs</h1>
 
-      {/* <div className="card">
-        <h2>Blog Title</h2>
-        <p>Some wise words.</p>
-        <button>Edit</button>
-      </div> */}
+      <div id="postsContainer">
+        {posts.map((post) => (
+          <div key={post.id} id={post.id} className="postCard">
+            <h2>{post.name}</h2>
+            <h3>{post.tags}</h3>
+            <p>Publish status: {String(post.published)}</p>
+            <p>Created: {post.createdAt}</p>
+            <p>Updated: {post.updatedAt}</p>
+            <Link to={`/blogDetail/${post.id}`}>
+              <button>Edit Blog</button>
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

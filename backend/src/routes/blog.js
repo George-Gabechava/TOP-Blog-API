@@ -28,7 +28,14 @@ router.get(
   blogController.getPosts
 );
 
-// Delete Post Route
+// Get Blog
+router.get(
+  "/:postId",
+  passport.authenticate("jwt", { session: false }),
+  blogController.getPost
+);
+
+// Delete Post
 router.delete(
   "/:postId",
   passport.authenticate("jwt", { session: false }),

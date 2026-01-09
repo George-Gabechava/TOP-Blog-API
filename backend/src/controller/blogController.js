@@ -8,7 +8,6 @@ const prisma = new PrismaClient({ adapter });
 
 // if blogger, show all blogs
 async function getPosts(req, res) {
-  console.log("req user", req.user);
   if (req.user.admin === true) {
     const posts = await prisma.post.findMany();
     return res.status(200).json({ allPosts: posts });
@@ -24,4 +23,20 @@ async function deletePost(req, res) {
   return res.status(501).json({ errors: ["Delete post error."] });
 }
 
-export default { getPosts, deletePost };
+// if blogger, get specific blog
+async function getPost(req, res) {
+  if (req.user.admin === true) {
+    let id = req.params.postId;
+
+    const post = await prisma.post.findUnique({ where: { id } });
+    return res.status(200).json({ post: post });
+  }
+  // if not blogger (commenter/ not logged in), don't load blog details
+  else {
+    return res
+      .status(403)
+      .json({ errors: ["Forbidden: blogger access required."] });
+  }
+}
+
+export default { getPosts, deletePost, getPost };
