@@ -39,4 +39,36 @@ async function getPost(req, res) {
   }
 }
 
-export default { getPosts, deletePost, getPost };
+// update blog
+async function updatePost(req, res) {
+  try {
+    if (!req.user?.admin) {
+      return res
+        .status(403)
+        .json({ errors: ["Forbidden: blogger access required."] });
+    }
+
+    const { name, message, tags, publish } = req.body || {};
+
+    const data = {};
+    data.name = name;
+    data.message = message;
+    data.published = publish;
+    // format tags to work in db
+    const split = tags.split(",");
+    const trim = split.map((word) => word.trim());
+    data.tags = trim;
+
+    const updated = await prisma.post.update({
+      where: { id: req.params.postId },
+      data,
+    });
+
+    return res.status(200).json({ success: true, post: updated });
+  } catch (err) {
+    console.error("Update post error:", err);
+    return res.status(400).json({ errors: ["Failed to update post."] });
+  }
+}
+
+export default { getPosts, deletePost, getPost, updatePost };

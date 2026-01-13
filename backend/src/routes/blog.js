@@ -28,11 +28,18 @@ router.get(
   blogController.getPosts
 );
 
-// Get Blog
+// Get A Blog
 router.get(
   "/:postId",
   passport.authenticate("jwt", { session: false }),
   blogController.getPost
+);
+
+// Update Blog
+router.put(
+  "/:postId",
+  passport.authenticate("jwt", { session: false }),
+  blogController.updatePost
 );
 
 // Delete Post

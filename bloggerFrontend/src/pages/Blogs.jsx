@@ -35,6 +35,7 @@ function Blogs({ onAuthChange }) {
   useEffect(() => {
     getBlogs();
   }, []);
+
   return (
     <div>
       <h1>Recent Blogs</h1>
@@ -43,10 +44,26 @@ function Blogs({ onAuthChange }) {
         {posts.map((post) => (
           <div key={post.id} id={post.id} className="postCard">
             <h2>{post.name}</h2>
-            <h3>{post.tags}</h3>
-            <p>Publish status: {String(post.published)}</p>
-            <p>Created: {post.createdAt}</p>
-            <p>Updated: {post.updatedAt}</p>
+            <h3>Tags: {post.tags ? post.tags.join(", ") : ""}</h3>
+            <p>
+              Publish status: <b>{String(post.published)}</b>
+            </p>
+            <p>
+              Published:{" "}
+              {new Date(post.createdAt).toLocaleString("en-US", {
+                timeZone: "America/New_York",
+                timeStyle: "short",
+                dateStyle: "short",
+              })}
+            </p>
+            <p>
+              Updated:{" "}
+              {new Date(post.updatedAt).toLocaleString("en-US", {
+                timeZone: "America/New_York",
+                timeStyle: "short",
+                dateStyle: "short",
+              })}
+            </p>
             <Link to={`/blogDetail/${post.id}`}>
               <button>Edit Blog</button>
             </Link>

@@ -11,6 +11,7 @@
     "start": "vite preview --host 0.0.0.0 --port $PORT"
   },
   "dependencies": {
+    "@tinymce/tinymce-react": "^6.3.0",
     "dotenv": "^17.2.3",
     "jsonwebtoken": "^9.0.3",
     "react": "^19.2.0",
