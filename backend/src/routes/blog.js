@@ -35,6 +35,9 @@ router.get(
   blogController.getPost
 );
 
+// Get A Blog Comments
+router.get("/comments/:postId", blogController.getComments);
+
 // Update Blog
 router.put(
   "/:postId",
@@ -47,6 +50,13 @@ router.delete(
   "/:postId",
   passport.authenticate("jwt", { session: false }),
   blogController.deletePost
+);
+
+// Delete Comment
+router.delete(
+  "/comments/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  blogController.deleteComment
 );
 
 export default router;

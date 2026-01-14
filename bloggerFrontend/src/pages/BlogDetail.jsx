@@ -11,6 +11,7 @@ function BlogDetail({ onAuthChange }) {
   let postId = params.id;
 
   const [post, setPost] = useState([]);
+  const [comments, setComments] = useState([]);
 
   const backendBase =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
@@ -64,16 +65,35 @@ function BlogDetail({ onAuthChange }) {
       });
       const data = await res.json();
       setPost(data.post);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-      // Fetch comments if they exist (to delete or edit them)
-      // code
+  // Get Comments
+  async function getComments(id) {
+    const token = localStorage.getItem("auth_token");
+
+    try {
+      // Check Authorization status
+      let authReturn = checkAuth();
+      if (authReturn === false) {
+        return;
+      }
+
+      // Fetch comments if authorized
+      const res = await fetch(`${backendBase}/api/blog/comments/${id}`, {
+        method: "GET",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      const data = await res.json();
+      setComments(data.allComments);
     } catch (err) {
       console.log(err);
     }
   }
 
   // Save current Blog Details to server
-  // update all fields except publish/unpublish and published date.
   async function save(values) {
     const token = localStorage.getItem("auth_token");
 
@@ -116,7 +136,7 @@ function BlogDetail({ onAuthChange }) {
     });
 
     // Refresh blog post content on page
-    // await getBlog(postId);
+    await getBlog(postId);
   }
 
   // On Save, save all changes except new publish status
@@ -140,8 +160,32 @@ function BlogDetail({ onAuthChange }) {
     await save({ blogName, blogTags, publishStatus });
   }
 
+  // Delete Comment
+  async function deleteComment(commentId) {
+    console.log(commentId);
+    const ok = window.confirm("Delete this comment?");
+    if (!ok) return;
+
+    const token = localStorage.getItem("auth_token");
+
+    // Check Authorization status
+    const authOk = await checkAuth();
+    if (!authOk) return;
+
+    // Delete comments if authorized
+    const res = await fetch(`${backendBase}/api/blog/comments/${commentId}`, {
+      method: "DELETE",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    const data = await res.json();
+    setComments(data.allComments);
+  }
+
   useEffect(() => {
-    if (postId) getBlog(postId);
+    if (postId) {
+      getBlog(postId);
+      getComments(postId);
+    }
   }, [postId]);
 
   return (
@@ -263,7 +307,17 @@ function BlogDetail({ onAuthChange }) {
       </form>
 
       <h2>Comments</h2>
-      {/* code */}
+      <div id="commentsContainer">
+        {comments.map((comment) => (
+          <div key={comment.id} id={comment.id} className="commentCard">
+            <h3>{comment.owner.username}</h3> <p>@ {comment.uploadedAt}</p>
+            <p>{comment.message}</p>
+            <button type="button" onClick={() => deleteComment(comment.id)}>
+              Delete Comment
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

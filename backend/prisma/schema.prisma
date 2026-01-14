@@ -23,15 +23,8 @@ model User {
   @@index([username])
 }
 
-model Session {
-  id        String   @id @default(uuid())
-  sid       String   @unique
-  data      String   @db.Text
-  expiresAt DateTime
-}
-
 model Post {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   name      String
   message   String
   published Boolean  @default(false)
@@ -53,7 +46,7 @@ model Post {
 }
 
 model Comment {
-  id      String @id @default(uuid())
+  id      Int    @id @default(autoincrement())
   message String
 
   uploadedAt DateTime @default(now())
@@ -63,8 +56,8 @@ model Comment {
   owner   User   @relation(fields: [ownerId], references: [id])
 
   // Post relationship
-  postId String
-  Post   Post   @relation(fields: [id], references: [id])
+  postId Int
+  Post   Post @relation(fields: [postId], references: [id])
 
   @@index([postId])
   @@index([ownerId])
