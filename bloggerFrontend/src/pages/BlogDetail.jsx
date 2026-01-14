@@ -78,13 +78,22 @@ function BlogDetail({ onAuthChange }) {
     const token = localStorage.getItem("auth_token");
 
     // Check Authorization status
-    let authReturn = checkAuth();
-    if (authReturn === false) {
-      return;
-    }
+    const authOk = await checkAuth();
+    if (!authOk) return;
 
     // Get timestamp for updatedAt
-    let currentTime = new Date().getTime();
+    let publish = post.publish;
+
+    // If changing from unpublished --> published, set createdAt to current time
+    let createdAt = undefined;
+    if (post.publish === false && values.publishStatus === true) {
+      createdAt = new Date().getTime();
+    }
+
+    // Use current or updated publish status
+    if (values.publishStatus === false || values.publishStatus === true) {
+      publish = values.publishStatus;
+    }
 
     // Get blog post content
     log();
@@ -92,8 +101,9 @@ function BlogDetail({ onAuthChange }) {
     let content = {
       name: values.blogName,
       tags: values.blogTags,
-      updatedAt: currentTime,
+      createdAt: createdAt || post.createdAt,
       message: tinyContent,
+      publish: publish,
     };
 
     await fetch(`${backendBase}/api/blog/${postId}`, {
@@ -104,24 +114,30 @@ function BlogDetail({ onAuthChange }) {
         "Content-Type": "application/json",
       },
     });
+
+    // Refresh blog post content on page
+    // await getBlog(postId);
   }
 
+  // On Save, save all changes except new publish status
   function handleSubmit(e) {
     e.preventDefault();
-    // Get form values
     const formValues = new FormData(e.currentTarget);
     const blogName = (formValues.get("blogName") || "").toString();
     const blogTags = (formValues.get("blogTags") || "").toString();
-
-    let publish = post.published;
-    if (formValues.get("publish")) {
-      publish = formValues.get("publish");
-    }
-
-    // Get latest editor content
+    const publish = post.published;
     log();
-    console.log("pub", publish, formValues.get("publish"));
     save({ blogName, blogTags, publish });
+  }
+
+  // Save all changes including new publish status
+  async function submitPublishChange(publishStatus) {
+    const form = document.querySelector("form[method='post']");
+    const formData = new FormData(form);
+    const blogName = (formData.get("blogName") || "").toString();
+    const blogTags = (formData.get("blogTags") || "").toString();
+    log();
+    await save({ blogName, blogTags, publishStatus });
   }
 
   useEffect(() => {
@@ -237,10 +253,10 @@ function BlogDetail({ onAuthChange }) {
 
         <div>
           <button type="submit">Save</button>
-          <button name="publish" value="false" type="submit">
+          <button type="button" onClick={() => submitPublishChange(false)}>
             Unpublish
           </button>
-          <button name="publish" value="true" type="submit">
+          <button type="button" onClick={() => submitPublishChange(true)}>
             Publish
           </button>
         </div>

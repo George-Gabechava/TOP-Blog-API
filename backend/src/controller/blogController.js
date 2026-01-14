@@ -48,12 +48,13 @@ async function updatePost(req, res) {
         .json({ errors: ["Forbidden: blogger access required."] });
     }
 
-    const { name, message, tags, publish } = req.body || {};
+    const { name, message, tags, publish, createdAt } = req.body || {};
 
     const data = {};
     data.name = name;
     data.message = message;
     data.published = publish;
+    data.createdAt = createdAt;
     // format tags to work in db
     const split = tags.split(",");
     const trim = split.map((word) => word.trim());
