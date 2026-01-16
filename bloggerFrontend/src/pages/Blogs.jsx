@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 
 function Blogs({ onAuthChange }) {
   const [posts, setPosts] = useState([]);
+  const backendBase =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
-  async function getBlogs() {
-    const backendBase =
-      import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  // Check auth status
+  async function checkAuth() {
+    const token = localStorage.getItem("auth_token");
+
     try {
-      const token = localStorage.getItem("auth_token");
-      // Check auth status
       const myStatus = await fetch(`${backendBase}/api/users/me`, {
         method: "GET",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -18,6 +19,22 @@ function Blogs({ onAuthChange }) {
       onAuthChange(myStatus.ok);
       if (!myStatus.ok) {
         console.error("auth check failed", myStatus.status);
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.error("auth check failed", err);
+      onAuthChange(false);
+      return false;
+    }
+  }
+
+  async function getBlogs() {
+    try {
+      const token = localStorage.getItem("auth_token");
+      // Check Authorization status
+      let authReturn = checkAuth();
+      if (authReturn === false) {
         return;
       }
 
@@ -32,12 +49,69 @@ function Blogs({ onAuthChange }) {
       console.log(err);
     }
   }
+
+  async function createBlog() {
+    try {
+      const token = localStorage.getItem("auth_token");
+      // Check Authorization status
+      let authReturn = checkAuth();
+      if (authReturn === false) {
+        return;
+      }
+
+      const myStatus = await fetch(`${backendBase}/api/users/me`, {
+        method: "GET",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      onAuthChange(myStatus.ok);
+      if (!myStatus.ok) {
+        console.error("auth check failed", myStatus.status);
+        return;
+      }
+
+      // Create new blog
+      const res = await fetch(`${backendBase}/api/blog`, {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      getBlogs();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // Delete Post
+  async function deletePost(id) {
+    const ok = window.confirm("Delete this post?");
+    if (!ok) return;
+
+    const token = localStorage.getItem("auth_token");
+
+    // Check Authorization status
+    const authOk = await checkAuth();
+    if (!authOk) return;
+
+    // Delete post if authorized
+    const res = await fetch(`${backendBase}/api/blog/${id}`, {
+      method: "DELETE",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!res.ok) {
+      console.error(await res.text());
+      return;
+    }
+    await getBlogs();
+  }
+
   useEffect(() => {
     getBlogs();
   }, []);
 
   return (
     <div>
+      <button type="button" onClick={() => createBlog()}>
+        Create New Blog
+      </button>
       <h1>Recent Blogs</h1>
 
       <div id="postsContainer">
@@ -67,6 +141,9 @@ function Blogs({ onAuthChange }) {
             <Link to={`/blogDetail/${post.id}`}>
               <button>Edit Blog</button>
             </Link>
+            <button type="button" onClick={() => deletePost(post.id)}>
+              Delete Blog
+            </button>
           </div>
         ))}
       </div>

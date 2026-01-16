@@ -19,9 +19,6 @@ async function getPosts(req, res) {
       .json({ errors: ["Forbidden: blogger access required."] });
   }
 }
-async function deletePost(req, res) {
-  return res.status(501).json({ errors: ["Delete post error."] });
-}
 
 // if blogger, get specific blog
 async function getPost(req, res) {
@@ -70,7 +67,7 @@ async function updatePost(req, res) {
     data.name = name;
     data.message = message;
     data.published = publish;
-    data.createdAt = createdAt;
+    data.createdAt = new Date(createdAt);
     // format tags to work in db
     const split = tags.split(",");
     const trim = split.map((word) => word.trim());
@@ -85,6 +82,53 @@ async function updatePost(req, res) {
   } catch (err) {
     console.error("Update post error:", err);
     return res.status(400).json({ errors: ["Failed to update post."] });
+  }
+}
+
+// If blogger, create an unpublished blog (default)
+async function createPost(req, res) {
+  try {
+    if (req.user.admin === true) {
+      const data = {
+        name: "New Blog",
+        message: "New message.",
+        ownerId: req.user.id,
+        tags: [],
+      };
+
+      await prisma.post.create({ data });
+
+      return res.status(201).json({ success: true });
+    }
+
+    // if not authorized, throw error
+    else {
+      return res
+        .status(403)
+        .json({ errors: ["Forbidden: blogger access required."] });
+    }
+  } catch (err) {
+    console.error("Update post error:", err);
+    return res.status(400).json({ errors: ["Failed to create post."] });
+  }
+}
+// If blogger, delete blog
+async function deletePost(req, res) {
+  try {
+    if (req.user.admin === true) {
+      let postId = req.params.postId;
+      await prisma.post.delete({ where: { id: parseInt(postId) } });
+      return res.status(200).json({ success: true });
+    }
+    // if not authorized, throw error
+    else {
+      return res
+        .status(403)
+        .json({ errors: ["Forbidden: blogger access required."] });
+    }
+  } catch (err) {
+    console.error("Delete post error:", err);
+    return res.status(400).json({ errors: ["Failed to delete post."] });
   }
 }
 
@@ -107,9 +151,10 @@ async function deleteComment(req, res) {
 
 export default {
   getPosts,
-  deletePost,
   getPost,
   getComments,
   updatePost,
+  createPost,
+  deletePost,
   deleteComment,
 };

@@ -1,0 +1,10 @@
+.commentHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.commentCard {
+  border: solid 1px gray;
+  border-radius: 25px;
+}

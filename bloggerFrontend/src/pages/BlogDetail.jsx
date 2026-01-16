@@ -66,7 +66,7 @@ function BlogDetail({ onAuthChange }) {
       const data = await res.json();
       setPost(data.post);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -89,7 +89,7 @@ function BlogDetail({ onAuthChange }) {
       const data = await res.json();
       setComments(data.allComments);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -106,7 +106,8 @@ function BlogDetail({ onAuthChange }) {
 
     // If changing from unpublished --> published, set createdAt to current time
     let createdAt = undefined;
-    if (post.publish === false && values.publishStatus === true) {
+
+    if (post.published === false && values.publishStatus === true) {
       createdAt = new Date().getTime();
     }
 
@@ -162,8 +163,6 @@ function BlogDetail({ onAuthChange }) {
 
   // Delete Comment
   async function deleteComment(commentId) {
-    console.log(commentId);
-
     const ok = window.confirm("Delete this comment?");
     if (!ok) return;
 
@@ -314,7 +313,17 @@ function BlogDetail({ onAuthChange }) {
       <div id="commentsContainer">
         {comments.map((comment) => (
           <div key={comment.id} id={comment.id} className="commentCard">
-            <h3>{comment.owner.username}</h3> <p>@ {comment.uploadedAt}</p>
+            <div className="commentHeader">
+              <h3 className="commentUser">{comment.owner.username} </h3>
+              <span className="commentTime">
+                {"\u00A0"}@{" "}
+                {new Date(comment.uploadedAt).toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  timeStyle: "short",
+                  dateStyle: "short",
+                })}
+              </span>
+            </div>
             <p>{comment.message}</p>
             <button type="button" onClick={() => deleteComment(comment.id)}>
               Delete Comment
