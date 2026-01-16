@@ -6,3 +6,7 @@ backend/dist
 bloggerFrontend/node_modules
 bloggerFrontend/.env
 bloggerFrontend/dist
+
+visitorFrontend/node_modules
+visitorFrontend/.env
+visitorFrontend/dist
