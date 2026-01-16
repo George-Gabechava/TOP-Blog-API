@@ -163,6 +163,7 @@ function BlogDetail({ onAuthChange }) {
   // Delete Comment
   async function deleteComment(commentId) {
     console.log(commentId);
+
     const ok = window.confirm("Delete this comment?");
     if (!ok) return;
 
@@ -177,8 +178,11 @@ function BlogDetail({ onAuthChange }) {
       method: "DELETE",
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
-    const data = await res.json();
-    setComments(data.allComments);
+    if (!res.ok) {
+      console.error(await res.text());
+      return;
+    }
+    await getComments(postId);
   }
 
   useEffect(() => {

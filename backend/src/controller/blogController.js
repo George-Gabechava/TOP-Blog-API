@@ -97,10 +97,11 @@ async function deleteComment(req, res) {
     }
     let commentId = req.params.commentId;
 
-    await prisma.comment.delete({ where: { commentId } });
+    await prisma.comment.delete({ where: { id: parseInt(commentId) } });
+    return res.status(200).json({ success: true });
   } catch (err) {
-    console.error("Update post error:", err);
-    return res.status(400).json({ errors: ["Failed to update post."] });
+    console.error("Delete comment error:", err);
+    return res.status(400).json({ errors: ["Failed to delete comment."] });
   }
 }
 

@@ -13,6 +13,7 @@ export default defineConfig({
   },
   preview: {
     host: true,
+    port: 4174,
     strictPort: true,
     allowedHosts: ["top-blog-api-bloggerfrontend-production.up.railway.app"],
   },
