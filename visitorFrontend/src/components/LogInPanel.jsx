@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import "./LogInPanel.css";
 
@@ -12,7 +11,9 @@ function LogInPanel({ onAuthChange }) {
   return (
     <div id="LogInPanel">
       <div id="logInButtons">
-        <button>Home Page Icon</button>
+        <Link to="/">
+          <button>Home Page Icon</button>
+        </Link>
         <button>Button/Mobile Drop</button>
       </div>
       <div id="logInButtons">

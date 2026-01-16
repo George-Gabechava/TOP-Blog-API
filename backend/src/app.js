@@ -9,9 +9,15 @@ import passport from "./passportAuth.js";
 const app = express();
 
 // CORS setup
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:4173";
+const FRONTEND_URL1 = process.env.FRONTEND_URL1;
+const FRONTEND_URL2 = process.env.FRONTEND_URL2;
 const corsOptions = {
-  origin: FRONTEND_URL,
+  origin: [
+    "http://localhost:4173",
+    "http://localhost:4174",
+    FRONTEND_URL1,
+    FRONTEND_URL2,
+  ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],

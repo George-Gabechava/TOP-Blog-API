@@ -6,36 +6,69 @@ const { PrismaClient } = prismaPkg;
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
-// if blogger, show all blogs
+// If blogger, get all blogs
 async function getPosts(req, res) {
-  if (req.user.admin === true) {
-    const posts = await prisma.post.findMany();
-    return res.status(200).json({ allPosts: posts });
+  try {
+    if (req.user.admin === true) {
+      const posts = await prisma.post.findMany();
+      return res.status(200).json({ allPosts: posts });
+    } else {
+      return res
+        .status(403)
+        .json({ errors: ["Forbidden: blogger access required."] });
+    }
+  } catch (err) {
+    console.error("Update post error:", err);
+    return res.status(400).json({ errors: ["Failed to get blogs."] });
   }
-  // if not blogger (commenter/ not logged in), don't load blogs
-  else {
-    return res
-      .status(403)
-      .json({ errors: ["Forbidden: blogger access required."] });
+}
+
+// If viewer, get all published blogs
+async function getPublishedPosts(req, res) {
+  try {
+    const posts = await prisma.post.findMany({ where: { published: true } });
+    return res.status(200).json({ allPosts: posts });
+  } catch (err) {
+    console.error("Update post error:", err);
+    return res.status(400).json({ errors: ["Failed to get blogs."] });
   }
 }
 
 // if blogger, get specific blog
 async function getPost(req, res) {
-  if (req.user.admin === true) {
-    let id = parseInt(req.params.postId);
+  try {
+    if (req.user.admin === true) {
+      let id = parseInt(req.params.postId);
 
-    const post = await prisma.post.findUnique({ where: { id } });
-    return res.status(200).json({ post: post });
-  }
-  // if not blogger (commenter/ not logged in), don't load blog details
-  else {
-    return res
-      .status(403)
-      .json({ errors: ["Forbidden: blogger access required."] });
+      const post = await prisma.post.findUnique({ where: { id } });
+      return res.status(200).json({ post: post });
+    }
+    // if not blogger (commenter/ not logged in), don't load blog details
+    else {
+      return res
+        .status(403)
+        .json({ errors: ["Forbidden: blogger access required."] });
+    }
+  } catch (err) {
+    console.error("Update post error:", err);
+    return res.status(400).json({ errors: ["Failed to get blogs."] });
   }
 }
 
+// if viewer, get specific published blog
+async function getPublishedPost(req, res) {
+  try {
+    let id = parseInt(req.params.postId);
+
+    const post = await prisma.post.findUnique({
+      where: { id, published: true },
+    });
+    return res.status(200).json({ post: post });
+  } catch (err) {
+    console.error("Update post error:", err);
+    return res.status(400).json({ errors: ["Failed to get blog."] });
+  }
+}
 // Get Comments
 async function getComments(req, res) {
   try {
@@ -151,7 +184,9 @@ async function deleteComment(req, res) {
 
 export default {
   getPosts,
+  getPublishedPosts,
   getPost,
+  getPublishedPost,
   getComments,
   updatePost,
   createPost,

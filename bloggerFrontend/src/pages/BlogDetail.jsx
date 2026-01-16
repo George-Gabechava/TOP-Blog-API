@@ -189,7 +189,7 @@ function BlogDetail({ onAuthChange }) {
       getBlog(postId);
       getComments(postId);
     }
-  }, [postId]);
+  }, [postId, comments]);
 
   return (
     <div>
@@ -291,7 +291,7 @@ function BlogDetail({ onAuthChange }) {
             ],
             ai_request: (request, respondWith) =>
               respondWith.string(() =>
-                Promise.reject("See docs to implement AI Assistant")
+                Promise.reject("See docs to implement AI Assistant"),
               ),
             uploadcare_public_key: "c2bdf442e46606790b07",
           }}

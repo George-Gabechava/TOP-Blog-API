@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./AdminPanel.css";
+import "./VisitorPanel.css";
 
 function AdminPanel({ onAuthChange }) {
   function handleLogout() {
@@ -10,13 +10,14 @@ function AdminPanel({ onAuthChange }) {
   return (
     <div id="AdminPanel">
       <div id="logInButtons">
+        {/* Make Components?: */}
         <Link to="/">
           <button>*Home Page Icon</button>
         </Link>
       </div>
 
       <div id="logInButtons">
-        <Link to="/blogs">
+        <Link to="/">
           <button>Blogs</button>
         </Link>
         <button onClick={handleLogout}>Log Out</button>

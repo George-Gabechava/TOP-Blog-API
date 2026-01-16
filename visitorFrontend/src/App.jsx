@@ -1,4 +1,18 @@
-import { useState } from "react";
+// Set Up
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Components
+import LogInPanel from "./components/LogInPanel";
+import VisitorPanel from "./components/VisitorPanel";
+import Footer from "./components/Footer";
+
+import LogIn from "./pages/LogIn.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import BlogFeed from "./pages/BlogFeed.jsx";
+import BlogView from "./pages/BlogView.jsx";
+
+// Assets
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -6,6 +20,8 @@ import "./App.css";
 function App() {
   // Authorization from Login.jsx via onAuthChange
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const backendBase =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
   function handleAuthChange() {
     setIsLoggedIn(Boolean(localStorage.getItem("auth_token")));
@@ -19,24 +35,6 @@ function App() {
       return;
     }
     setIsLoggedIn(true);
-    const backendBase =
-      import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-    (async () => {
-      try {
-        const res = await fetch(`${backendBase}/api/users/me`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) {
-          setIsBlogger(false);
-          return;
-        }
-        const data = await res.json();
-        setIsBlogger(Boolean(data.admin));
-      } catch (err) {
-        console.error("auth bootstrap failed", err);
-      }
-    })();
   }, []);
 
   // Log state changes with fresh values
@@ -45,6 +43,8 @@ function App() {
   }, [isLoggedIn]);
 
   // Update Navigation Bar depending on user permissions.
+  let panel;
+  let content;
   if (isLoggedIn === true) {
     panel = <VisitorPanel onAuthChange={handleAuthChange} />;
     content = <h3>You are logged in.</h3>;
@@ -54,25 +54,31 @@ function App() {
   }
 
   return (
-    <>
+    <BrowserRouter>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {panel}
+        {content}
+
+        {/* Routes for content swapping */}
+        <Routes>
+          <Route
+            path="/login"
+            element={<LogIn onAuthChange={handleAuthChange} />}
+          />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route
+            path="/"
+            element={<BlogFeed onAuthChange={handleAuthChange} />}
+          />
+          <Route
+            path="/blogView/:id"
+            element={<BlogView onAuthChange={handleAuthChange} />}
+          />
+        </Routes>
+
+        <Footer></Footer>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </BrowserRouter>
   );
 }
 

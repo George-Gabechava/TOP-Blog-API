@@ -1,8 +1,8 @@
-import "./Blogs.css";
+import "./BlogFeed.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Blogs({ onAuthChange }) {
+function BlogFeed({ onAuthChange }) {
   const [posts, setPosts] = useState([]);
 
   async function getBlogs() {
@@ -10,19 +10,19 @@ function Blogs({ onAuthChange }) {
       import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
     try {
       const token = localStorage.getItem("auth_token");
-      // Check auth status
-      const myStatus = await fetch(`${backendBase}/api/users/me`, {
-        method: "GET",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
-      onAuthChange(myStatus.ok);
-      if (!myStatus.ok) {
-        console.error("auth check failed", myStatus.status);
-        return;
-      }
+      // // Check auth status for navigation bar
+      // const myStatus = await fetch(`${backendBase}/api/users/me`, {
+      //   method: "GET",
+      //   headers: token ? { Authorization: `Bearer ${token}` } : {},
+      // });
+      // onAuthChange(myStatus.ok);
+      // if (!myStatus.ok) {
+      //   console.error("auth check failed", myStatus.status);
+      //   return;
+      // }
 
-      // Fetch blogs if authorized
-      const res = await fetch(`${backendBase}/api/blog`, {
+      // Fetch blogs
+      const res = await fetch(`${backendBase}/api/blog/published`, {
         method: "GET",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
@@ -64,8 +64,8 @@ function Blogs({ onAuthChange }) {
                 dateStyle: "short",
               })}
             </p>
-            <Link to={`/blogDetail/${post.id}`}>
-              <button>Edit Blog</button>
+            <Link to={`/blogView/${post.id}`}>
+              <button>View Blog</button>
             </Link>
           </div>
         ))}
@@ -74,4 +74,4 @@ function Blogs({ onAuthChange }) {
   );
 }
 
-export default Blogs;
+export default BlogFeed;

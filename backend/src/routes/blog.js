@@ -8,14 +8,28 @@ const router = Router();
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  blogController.getPosts
+  blogController.getPosts,
+);
+
+// Get Published Blogs
+router.get(
+  "/published",
+  passport.authenticate("jwt", { session: false }),
+  blogController.getPublishedPosts,
 );
 
 // Get A Blog
 router.get(
   "/:postId",
   passport.authenticate("jwt", { session: false }),
-  blogController.getPost
+  blogController.getPost,
+);
+
+// Get Published Blog
+router.get(
+  "/published/:postId",
+  passport.authenticate("jwt", { session: false }),
+  blogController.getPublishedPost,
 );
 
 // Get A Blog Comments
@@ -25,28 +39,28 @@ router.get("/comments/:postId", blogController.getComments);
 router.put(
   "/:postId",
   passport.authenticate("jwt", { session: false }),
-  blogController.updatePost
+  blogController.updatePost,
 );
 
 // Create New Post
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  blogController.createPost
+  blogController.createPost,
 );
 
 // Delete Post
 router.delete(
   "/:postId",
   passport.authenticate("jwt", { session: false }),
-  blogController.deletePost
+  blogController.deletePost,
 );
 
 // Delete Comment
 router.delete(
   "/comments/:commentId",
   passport.authenticate("jwt", { session: false }),
-  blogController.deleteComment
+  blogController.deleteComment,
 );
 
 export default router;
