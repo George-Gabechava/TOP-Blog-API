@@ -189,7 +189,7 @@ function BlogDetail({ onAuthChange }) {
       getBlog(postId);
       getComments(postId);
     }
-  }, [postId, comments]);
+  }, [postId]);
 
   return (
     <div>

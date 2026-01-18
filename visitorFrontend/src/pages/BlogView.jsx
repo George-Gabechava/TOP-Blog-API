@@ -67,19 +67,15 @@ function BlogView({ onAuthChange }) {
     if (!postId) return;
     getBlog(postId);
     getComments(postId);
-  }, [postId, comments]);
+  }, [postId]);
 
   return (
     <div>
       <h1>{post.name}</h1>
       <h3 class="blogTags">
-        Tags:
+        Tags:&nbsp;
         {post.tags ? post.tags.join(", ") : ""}
       </h3>
-
-      <p>
-        Publish status: <b>{String(post.published)}</b>
-      </p>
       <p>
         Published:{" "}
         {new Date(post.createdAt).toLocaleString("en-US", {
@@ -96,10 +92,19 @@ function BlogView({ onAuthChange }) {
           dateStyle: "short",
         })}
       </p>
-      <p>{post.message}</p>
+      {post.message}
 
       <h2>Comments</h2>
-      <div id="commentsContainer"></div>
+      <div id="commentsContainer">
+        {comments.map((comment) => (
+          <div key={comment.id} className="commentCard">
+            <p>
+              <b>{comment.owner.username}</b>:
+            </p>
+            <p> {comment.message}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
