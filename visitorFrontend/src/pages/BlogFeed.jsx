@@ -10,16 +10,6 @@ function BlogFeed({ onAuthChange }) {
       import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
     try {
       const token = localStorage.getItem("auth_token");
-      // // Check auth status for navigation bar
-      // const myStatus = await fetch(`${backendBase}/api/users/me`, {
-      //   method: "GET",
-      //   headers: token ? { Authorization: `Bearer ${token}` } : {},
-      // });
-      // onAuthChange(myStatus.ok);
-      // if (!myStatus.ok) {
-      //   console.error("auth check failed", myStatus.status);
-      //   return;
-      // }
 
       // Fetch blogs
       const res = await fetch(`${backendBase}/api/blog/published`, {
@@ -45,9 +35,6 @@ function BlogFeed({ onAuthChange }) {
           <div key={post.id} id={post.id} className="postCard">
             <h2>{post.name}</h2>
             <h3>Tags: {post.tags ? post.tags.join(", ") : ""}</h3>
-            <p>
-              Publish status: <b>{String(post.published)}</b>
-            </p>
             <p>
               Published:{" "}
               {new Date(post.createdAt).toLocaleString("en-US", {

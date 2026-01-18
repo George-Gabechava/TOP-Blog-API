@@ -3,10 +3,14 @@ import { useParams } from "react-router-dom";
 import "./BlogView.css";
 
 function BlogView({ onAuthChange }) {
+  // Setting up post and comment states
   let param = useParams();
   let postId = param.id;
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
+
+  // Setting up string for Tinymce html.
+  // No separate markup state needed; compute from post.message
 
   const backendBase =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
@@ -41,6 +45,8 @@ function BlogView({ onAuthChange }) {
       });
       const data = await res.json();
       setPost(data.post);
+      // If you want to inspect the HTML string, log from the response
+      console.log("message html:", data.post?.message);
     } catch (err) {
       console.log(err);
     }
@@ -72,7 +78,7 @@ function BlogView({ onAuthChange }) {
   return (
     <div>
       <h1>{post.name}</h1>
-      <h3 class="blogTags">
+      <h3 className="blogTags">
         Tags:&nbsp;
         {post.tags ? post.tags.join(", ") : ""}
       </h3>
@@ -92,7 +98,8 @@ function BlogView({ onAuthChange }) {
           dateStyle: "short",
         })}
       </p>
-      {post.message}
+
+  <div dangerouslySetInnerHTML={{ __html: post?.message || "" }} />
 
       <h2>Comments</h2>
       <div id="commentsContainer">

@@ -6,6 +6,9 @@ const { PrismaClient } = prismaPkg;
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
+// Imports
+import sanitizeHtml from "sanitize-html";
+
 // If blogger, get all blogs
 async function getPosts(req, res) {
   try {
@@ -98,13 +101,16 @@ async function updatePost(req, res) {
 
     const data = {};
     data.name = name;
-    data.message = message;
     data.published = publish;
     data.createdAt = new Date(createdAt);
     // format tags to work in db
     const split = tags.split(",");
     const trim = split.map((word) => word.trim());
     data.tags = trim;
+
+    // Sanitize message for safety
+    const sanitizedMessage = sanitizeHtml(message);
+    data.message = sanitizedMessage;
 
     const updated = await prisma.post.update({
       where: { id: parseInt(req.params.postId) },
