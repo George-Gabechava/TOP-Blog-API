@@ -35,11 +35,6 @@ function App() {
     setIsLoggedIn(true);
   }, []);
 
-  // Log state changes with fresh values
-  useEffect(() => {
-    console.log("App state", { isLoggedIn });
-  }, [isLoggedIn]);
-
   // Update Navigation Bar depending on user permissions.
   let panel;
   if (isLoggedIn === true) {
@@ -50,28 +45,34 @@ function App() {
 
   return (
     <BrowserRouter>
-      {panel}
+      <div id="bodyContainer">
+        {panel}
 
-      {/* Routes for content swapping */}
-      <Routes>
-        <Route
-          path="/login"
-          element={<LogIn onAuthChange={handleAuthChange} />}
-        />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route
-          path="/"
-          element={<BlogFeed onAuthChange={handleAuthChange} />}
-        />
-        <Route
-          path="/blogView/:id"
-          element={
-            <BlogView onAuthChange={handleAuthChange} isLoggedIn={isLoggedIn} />
-          }
-        />
-      </Routes>
-
-      <Footer></Footer>
+        <div id="contentContainer">
+          {/* Routes for content swapping */}
+          <Routes>
+            <Route
+              path="/login"
+              element={<LogIn onAuthChange={handleAuthChange} />}
+            />
+            <Route path="/signUp" element={<SignUp />} />
+            <Route
+              path="/"
+              element={<BlogFeed onAuthChange={handleAuthChange} />}
+            />
+            <Route
+              path="/blogView/:id"
+              element={
+                <BlogView
+                  onAuthChange={handleAuthChange}
+                  isLoggedIn={isLoggedIn}
+                />
+              }
+            />
+          </Routes>
+          <Footer></Footer>
+        </div>
+      </div>
     </BrowserRouter>
   );
 }

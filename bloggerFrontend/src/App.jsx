@@ -58,9 +58,9 @@ function App() {
     })();
   }, []);
 
-  // Log state changes with fresh values
   useEffect(() => {
-    console.log("App state", { isBlogger, isLoggedIn });
+    // Log state changes of user (commented out from testing)
+    // console.log("App state", { isBlogger, isLoggedIn });
   }, [isBlogger, isLoggedIn]);
 
   // Update Navigation Bar depending on user permissions.
@@ -79,17 +79,7 @@ function App() {
     <BrowserRouter>
       <div>
         {panel}
-        <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
-        </div>
-
         {content}
-
         {/* Routes for content swapping */}
         <Routes>
           <Route

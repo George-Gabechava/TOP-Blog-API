@@ -30,7 +30,7 @@ h2 {
 }
 
 .postCard:hover {
-  color: #646cff;
+  color: #4e94ff;
   border: solid black 1px;
   background: lightgray;
   transition: background 0.25s ease-in-out;

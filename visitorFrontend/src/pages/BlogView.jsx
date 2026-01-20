@@ -8,6 +8,7 @@ function BlogView({ onAuthChange, isLoggedIn }) {
   let postId = param.id;
   const [post, setPost] = useState([]);
   const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
 
   // Setting up string for Tinymce html.
   const [markup, setMarkup] = useState({ __html: <></> });
@@ -70,8 +71,7 @@ function BlogView({ onAuthChange, isLoggedIn }) {
   // Create Comment on submit
   async function handleSubmit(e) {
     e.preventDefault();
-    const formValues = new FormData(e.currentTarget);
-    const commentMessage = formValues.get("commentContent");
+    const commentMessage = commentText.trim();
     const token = localStorage.getItem("auth_token");
     try {
       const res = await fetch(`${backendBase}/api/blog/comments/${postId}`, {
@@ -82,7 +82,10 @@ function BlogView({ onAuthChange, isLoggedIn }) {
         },
         body: JSON.stringify({ message: commentMessage }),
       });
+      // Get and render updated set of comments
       getComments(postId);
+      // Clear comment field after submit
+      setCommentText("");
     } catch (err) {
       console.error(err);
     }
@@ -99,14 +102,15 @@ function BlogView({ onAuthChange, isLoggedIn }) {
   let content;
   if (isLoggedIn === true) {
     content = (
-      <div>
+      <div id="commentSubmitContainer">
         <h3>Leave A Comment</h3>
         <form id="commentForm" className="commentForm" onSubmit={handleSubmit}>
           <textarea
             name="commentContent"
             id="commentContent"
-            className="commentBox"
             rows="2"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
           />
           <button type="submit">Submit</button>
         </form>
@@ -117,7 +121,7 @@ function BlogView({ onAuthChange, isLoggedIn }) {
   }
 
   return (
-    <div>
+    <div id="blogViewContainer">
       <h1>{post.name}</h1>
       <h3 className="blogTags">
         Tags:&nbsp;
@@ -142,8 +146,8 @@ function BlogView({ onAuthChange, isLoggedIn }) {
 
       <div className="blogMessage" dangerouslySetInnerHTML={markup} />
 
-      <h2>Comments</h2>
       {content}
+      <h2>Comments</h2>
       <div id="commentsContainer">
         {comments.map((comment) => (
           <div key={comment.id} className="commentCard">

@@ -10,8 +10,28 @@
   flex-direction: column;
 }
 
-.commentBox {
-  width: 75vw;
-  min-height: 3em;
-  margin-bottom: 1em;
+#commentContent {
+  min-height: 4em;
+  width: 90%;
+  font-size: large;
+}
+
+h2 {
+  margin-top: 0.5em;
+  border-bottom: solid grey 1px;
+}
+
+.commentCard {
+  border-bottom: solid grey 1px;
+}
+
+#blogViewContainer {
+  margin: 1em;
+  width: 67vw;
+  margin-left: 3em;
+}
+
+#commentSubmitContainer {
+  border: solid grey 1px;
+  border-radius: 1em;
 }

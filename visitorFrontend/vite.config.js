@@ -15,7 +15,7 @@ export default defineConfig({
     host: true,
     port: 4174,
     strictPort: true,
-    allowedHosts: ["top-blog-api-bloggerfrontend-production.up.railway.app"],
+    allowedHosts: ["top-blog-api-visitorfrontend-production.up.railway.app"],
   },
   build: {
     // generate .vite/manifest.json in outDir
