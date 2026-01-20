@@ -12,13 +12,13 @@ function AdminPanel({ onAuthChange }) {
       <div id="logInButtons">
         {/* Make Components?: */}
         <Link to="/">
-          <button>*Home Page Icon</button>
+          <button id="homePageButton">*Home Page Icon</button>
         </Link>
       </div>
 
       <div id="logInButtons">
         <Link to="/">
-          <button>Blogs</button>
+          <button id="blogButton">Blogs</button>
         </Link>
         <button onClick={handleLogout}>Log Out</button>
       </div>

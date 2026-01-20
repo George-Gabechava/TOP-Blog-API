@@ -2,5 +2,11 @@
   display: flex;
   justify-content: space-between;
 
-  width: calc(95vw - 4rem);
+  padding: 2em;
+  background-color: RGB(24, 119, 242);
+}
+
+#blogButton,
+#homePageButton {
+  margin-right: 1em;
 }

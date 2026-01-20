@@ -238,13 +238,13 @@ function BlogDetail({ onAuthChange }) {
             dateStyle: "short",
           })}
         </p>
-        Summary:{" "}
-        <input
-          type="text"
+        Summary: <br></br>
+        <textarea
+          type="textarea"
           id="summary"
           name="summary"
           defaultValue={post.summary}
-        ></input>
+        ></textarea>
         <Editor
           apiKey={import.meta.env.VITE_TINY_API}
           onInit={(_evt, editor) => (editorRef.current = editor)}

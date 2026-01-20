@@ -14,8 +14,6 @@ import BlogDetail from "./pages/BlogDetail.jsx";
 import Footer from "./components/Footer.jsx";
 
 // Assets
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 // Navigation Bar based on user type

@@ -1,0 +1,29 @@
+#postsContainer {
+  display: flex;
+  gap: 1vw;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.postCard {
+  border: solid gray 1px;
+  border-radius: 1em;
+  padding: 1em;
+  width: 30vw;
+  height: calc(33vh + 88px);
+  color: black;
+}
+
+h2 {
+  margin-top: 0px;
+  margin-bottom: 0.5em;
+}
+
+.summaryContainer {
+  width: 100%;
+  max-height: 7.5rem;
+  text-overflow: clip;
+  overflow: hidden;
+  margin-top: 1em;
+}

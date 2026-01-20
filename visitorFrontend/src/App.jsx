@@ -13,8 +13,6 @@ import BlogFeed from "./pages/BlogFeed.jsx";
 import BlogView from "./pages/BlogView.jsx";
 
 // Assets
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
@@ -52,33 +50,28 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
-        {panel}
+      {panel}
 
-        {/* Routes for content swapping */}
-        <Routes>
-          <Route
-            path="/login"
-            element={<LogIn onAuthChange={handleAuthChange} />}
-          />
-          <Route path="/signUp" element={<SignUp />} />
-          <Route
-            path="/"
-            element={<BlogFeed onAuthChange={handleAuthChange} />}
-          />
-          <Route
-            path="/blogView/:id"
-            element={
-              <BlogView
-                onAuthChange={handleAuthChange}
-                isLoggedIn={isLoggedIn}
-              />
-            }
-          />
-        </Routes>
+      {/* Routes for content swapping */}
+      <Routes>
+        <Route
+          path="/login"
+          element={<LogIn onAuthChange={handleAuthChange} />}
+        />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route
+          path="/"
+          element={<BlogFeed onAuthChange={handleAuthChange} />}
+        />
+        <Route
+          path="/blogView/:id"
+          element={
+            <BlogView onAuthChange={handleAuthChange} isLoggedIn={isLoggedIn} />
+          }
+        />
+      </Routes>
 
-        <Footer></Footer>
-      </div>
+      <Footer></Footer>
     </BrowserRouter>
   );
 }

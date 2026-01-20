@@ -32,19 +32,20 @@ function BlogFeed({ onAuthChange }) {
 
       <div id="postsContainer">
         {posts.map((post) => (
-          <div key={post.id} id={post.id} className="postCard">
-            <h2>{post.name}</h2>
-            <b>Tags: {post.tags ? post.tags.join(", ") : ""}</b>
-            <p>
-              Published:{" "}
-              {new Date(post.createdAt).toLocaleString("en-US", {
-                timeZone: "America/New_York",
-                timeStyle: "short",
-                dateStyle: "short",
-              })}
-            </p>
-            {/* Commenting out Updated as it isn't informative at the moment */}
-            {/* <p>
+          <Link to={`/blogView/${post.id}`}>
+            <div key={post.id} id={post.id} className="postCard">
+              <h2>{post.name}</h2>
+              <b>Tags: {post.tags ? post.tags.join(", ") : ""}</b>
+              <p>
+                Published:{" "}
+                {new Date(post.createdAt).toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  timeStyle: "short",
+                  dateStyle: "short",
+                })}
+              </p>
+              {/* Commenting out Updated as it isn't informative at the moment */}
+              {/* <p>
               Updated:{" "}
               {new Date(post.updatedAt).toLocaleString("en-US", {
                 timeZone: "America/New_York",
@@ -52,11 +53,12 @@ function BlogFeed({ onAuthChange }) {
                 dateStyle: "short",
               })}
             </p> */}
-            <p className="summaryContainer">{post.summary}</p>
-            <Link to={`/blogView/${post.id}`}>
-              <button>View Blog</button>
-            </Link>
-          </div>
+              <p className="summaryContainer">{post.summary}</p>
+              <p>
+                <b>Read More &#8594;</b>
+              </p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
