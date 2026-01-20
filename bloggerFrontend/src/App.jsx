@@ -60,7 +60,7 @@ function App() {
     })();
   }, []);
 
-  // Log state changes with fresh values (avoids stale closure logs)
+  // Log state changes with fresh values
   useEffect(() => {
     console.log("App state", { isBlogger, isLoggedIn });
   }, [isBlogger, isLoggedIn]);
@@ -108,7 +108,6 @@ function App() {
             element={<BlogDetail onAuthChange={handleAuthChange} />}
           />
         </Routes>
-        {/* Show Blogs if authorized */}
 
         <Footer />
       </div>

@@ -2,15 +2,15 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./BlogView.css";
 
-function BlogView({ onAuthChange }) {
+function BlogView({ onAuthChange, isLoggedIn }) {
   // Setting up post and comment states
   let param = useParams();
   let postId = param.id;
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState([]);
   const [comments, setComments] = useState([]);
 
   // Setting up string for Tinymce html.
-  // No separate markup state needed; compute from post.message
+  const [markup, setMarkup] = useState({ __html: <></> });
 
   const backendBase =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
@@ -45,8 +45,7 @@ function BlogView({ onAuthChange }) {
       });
       const data = await res.json();
       setPost(data.post);
-      // If you want to inspect the HTML string, log from the response
-      console.log("message html:", data.post?.message);
+      setMarkup({ __html: data.post.message });
     } catch (err) {
       console.log(err);
     }
@@ -68,12 +67,54 @@ function BlogView({ onAuthChange }) {
     }
   }
 
+  // Create Comment on submit
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formValues = new FormData(e.currentTarget);
+    const commentMessage = formValues.get("commentContent");
+    const token = localStorage.getItem("auth_token");
+    try {
+      const res = await fetch(`${backendBase}/api/blog/comments/${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ message: commentMessage }),
+      });
+      getComments(postId);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   // Prevent fetches from looping
   useEffect(() => {
     if (!postId) return;
     getBlog(postId);
     getComments(postId);
   }, [postId]);
+
+  // If logged in, show comment form. Otherwise, display a message to log in to comment.
+  let content;
+  if (isLoggedIn === true) {
+    content = (
+      <div>
+        <h3>Leave A Comment</h3>
+        <form id="commentForm" className="commentForm" onSubmit={handleSubmit}>
+          <textarea
+            name="commentContent"
+            id="commentContent"
+            className="commentBox"
+            rows="2"
+          />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    );
+  } else {
+    content = <h3>Log in to comment.</h3>;
+  }
 
   return (
     <div>
@@ -99,14 +140,21 @@ function BlogView({ onAuthChange }) {
         })}
       </p>
 
-  <div dangerouslySetInnerHTML={{ __html: post?.message || "" }} />
+      <div className="blogMessage" dangerouslySetInnerHTML={markup} />
 
       <h2>Comments</h2>
+      {content}
       <div id="commentsContainer">
         {comments.map((comment) => (
           <div key={comment.id} className="commentCard">
             <p>
-              <b>{comment.owner.username}</b>:
+              <b>{comment.owner.username}</b> @{" "}
+              {new Date(comment.uploadedAt).toLocaleString("en-US", {
+                timeZone: "America/New_York",
+                timeStyle: "short",
+                dateStyle: "short",
+              })}
+              :
             </p>
             <p> {comment.message}</p>
           </div>

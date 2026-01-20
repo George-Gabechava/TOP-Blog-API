@@ -13,7 +13,9 @@ import sanitizeHtml from "sanitize-html";
 async function getPosts(req, res) {
   try {
     if (req.user.admin === true) {
-      const posts = await prisma.post.findMany();
+      const posts = await prisma.post.findMany({
+        orderBy: { createdAt: "desc" },
+      });
       return res.status(200).json({ allPosts: posts });
     } else {
       return res
@@ -21,7 +23,7 @@ async function getPosts(req, res) {
         .json({ errors: ["Forbidden: blogger access required."] });
     }
   } catch (err) {
-    console.error("Update post error:", err);
+    console.error("Get posts error:", err);
     return res.status(400).json({ errors: ["Failed to get blogs."] });
   }
 }
@@ -29,11 +31,14 @@ async function getPosts(req, res) {
 // If viewer, get all published blogs
 async function getPublishedPosts(req, res) {
   try {
-    const posts = await prisma.post.findMany({ where: { published: true } });
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    });
     return res.status(200).json({ allPosts: posts });
   } catch (err) {
-    console.error("Update post error:", err);
-    return res.status(400).json({ errors: ["Failed to get blogs."] });
+    console.error("Update published posts error:", err);
+    return res.status(400).json({ errors: ["Failed to get published blogs."] });
   }
 }
 
@@ -53,8 +58,8 @@ async function getPost(req, res) {
         .json({ errors: ["Forbidden: blogger access required."] });
     }
   } catch (err) {
-    console.error("Update post error:", err);
-    return res.status(400).json({ errors: ["Failed to get blogs."] });
+    console.error("Get post error:", err);
+    return res.status(400).json({ errors: ["Failed to get blog."] });
   }
 }
 
@@ -68,8 +73,8 @@ async function getPublishedPost(req, res) {
     });
     return res.status(200).json({ post: post });
   } catch (err) {
-    console.error("Update post error:", err);
-    return res.status(400).json({ errors: ["Failed to get blog."] });
+    console.error("Get published post error:", err);
+    return res.status(400).json({ errors: ["Failed to get published blog."] });
   }
 }
 // Get Comments
@@ -83,7 +88,7 @@ async function getComments(req, res) {
     });
     return res.status(200).json({ allComments: comments });
   } catch (err) {
-    console.error("Update post error:", err);
+    console.error("Get comments error:", err);
     return res.status(400).json({ errors: ["Failed to get comments."] });
   }
 }
@@ -97,7 +102,7 @@ async function updatePost(req, res) {
         .json({ errors: ["Forbidden: blogger access required."] });
     }
 
-    const { name, message, tags, publish, createdAt } = req.body || {};
+    const { name, message, tags, publish, createdAt, summary } = req.body || {};
 
     const data = {};
     data.name = name;
@@ -111,6 +116,10 @@ async function updatePost(req, res) {
     // Sanitize message for safety
     const sanitizedMessage = sanitizeHtml(message);
     data.message = sanitizedMessage;
+
+    const sanitizedSummary = sanitizeHtml(summary);
+    data.summary = sanitizedSummary;
+    console.log(data.summary);
 
     const updated = await prisma.post.update({
       where: { id: parseInt(req.params.postId) },
@@ -171,6 +180,7 @@ async function deletePost(req, res) {
   }
 }
 
+// If blogger, delete comment
 async function deleteComment(req, res) {
   try {
     if (!req.user.admin) {
@@ -188,6 +198,30 @@ async function deleteComment(req, res) {
   }
 }
 
+// If logged in as a user, create comment
+async function createComment(req, res) {
+  try {
+    if (!req.user) {
+      return res.status(403).json({ errors: ["Forbidden: account required."] });
+    }
+    let postId = parseInt(req.params.postId);
+    const sanitizedComment = sanitizeHtml(req.body.message);
+
+    const commentData = {
+      postId: postId,
+      message: sanitizedComment,
+      ownerId: req.user.id,
+    };
+
+    await prisma.comment.create({ data: commentData });
+
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    console.error("Create comment error:", err);
+    return res.status(400).json({ errors: ["Failed to create comment."] });
+  }
+}
+
 export default {
   getPosts,
   getPublishedPosts,
@@ -198,4 +232,5 @@ export default {
   createPost,
   deletePost,
   deleteComment,
+  createComment,
 };

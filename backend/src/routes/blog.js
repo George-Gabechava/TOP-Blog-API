@@ -12,11 +12,7 @@ router.get(
 );
 
 // Get Published Blogs
-router.get(
-  "/published",
-  passport.authenticate("jwt", { session: false }),
-  blogController.getPublishedPosts,
-);
+router.get("/published", blogController.getPublishedPosts);
 
 // Get A Blog
 router.get(
@@ -26,11 +22,7 @@ router.get(
 );
 
 // Get Published Blog
-router.get(
-  "/published/:postId",
-  passport.authenticate("jwt", { session: false }),
-  blogController.getPublishedPost,
-);
+router.get("/published/:postId", blogController.getPublishedPost);
 
 // Get A Blog Comments
 router.get("/comments/:postId", blogController.getComments);
@@ -61,6 +53,13 @@ router.delete(
   "/comments/:commentId",
   passport.authenticate("jwt", { session: false }),
   blogController.deleteComment,
+);
+
+// Create Comment
+router.post(
+  "/comments/:postId",
+  passport.authenticate("jwt", { session: false }),
+  blogController.createComment,
 );
 
 export default router;

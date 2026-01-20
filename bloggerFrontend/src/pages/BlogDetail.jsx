@@ -125,6 +125,7 @@ function BlogDetail({ onAuthChange }) {
       createdAt: createdAt || post.createdAt,
       message: tinyContent,
       publish: publish,
+      summary: values.summary,
     };
 
     await fetch(`${backendBase}/api/blog/${postId}`, {
@@ -147,8 +148,10 @@ function BlogDetail({ onAuthChange }) {
     const blogName = (formValues.get("blogName") || "").toString();
     const blogTags = (formValues.get("blogTags") || "").toString();
     const publish = post.published;
+    const summary = (formValues.get("summary") || "").toString();
+
     log();
-    save({ blogName, blogTags, publish });
+    save({ blogName, blogTags, publish, summary });
   }
 
   // Save all changes including new publish status
@@ -157,8 +160,10 @@ function BlogDetail({ onAuthChange }) {
     const formData = new FormData(form);
     const blogName = (formData.get("blogName") || "").toString();
     const blogTags = (formData.get("blogTags") || "").toString();
+    const summary = (formData.get("summary") || "").toString();
+
     log();
-    await save({ blogName, blogTags, publishStatus });
+    await save({ blogName, blogTags, publishStatus, summary });
   }
 
   // Delete Comment
@@ -214,7 +219,6 @@ function BlogDetail({ onAuthChange }) {
             defaultValue={post.tags ? post.tags.join(", ") : ""}
           ></input>
         </h3>
-
         <p>
           Publish status: <b>{String(post.published)}</b>
         </p>
@@ -234,6 +238,13 @@ function BlogDetail({ onAuthChange }) {
             dateStyle: "short",
           })}
         </p>
+        Summary:{" "}
+        <input
+          type="text"
+          id="summary"
+          name="summary"
+          defaultValue={post.summary}
+        ></input>
         <Editor
           apiKey={import.meta.env.VITE_TINY_API}
           onInit={(_evt, editor) => (editorRef.current = editor)}
@@ -252,8 +263,8 @@ function BlogDetail({ onAuthChange }) {
               "table",
               "visualblocks",
               "wordcount",
-              // Your account includes a free trial of TinyMCE premium features
-              // Try the most popular premium features until Jan 25, 2026:
+              // The most popular premium features:
+              // Uncomment below if you have access to these features.
               "checklist",
               "mediaembed",
               "casechange",
@@ -297,7 +308,6 @@ function BlogDetail({ onAuthChange }) {
           }}
           initialValue={post.message ? post.message : "Hello World."}
         />
-
         <div>
           <button type="submit">Save</button>
           <button type="button" onClick={() => submitPublishChange(false)}>
@@ -316,12 +326,13 @@ function BlogDetail({ onAuthChange }) {
             <div className="commentHeader">
               <h3 className="commentUser">{comment.owner.username} </h3>
               <span className="commentTime">
-                {"\u00A0"}@{" "}
+                &nbsp;@{" "}
                 {new Date(comment.uploadedAt).toLocaleString("en-US", {
                   timeZone: "America/New_York",
                   timeStyle: "short",
                   dateStyle: "short",
                 })}
+                :
               </span>
             </div>
             <p>{comment.message}</p>

@@ -138,6 +138,7 @@ function Blogs({ onAuthChange }) {
                 dateStyle: "short",
               })}
             </p>
+            <p className="summaryContainer">{post.summary}</p>
             <Link to={`/blogDetail/${post.id}`}>
               <button>Edit Blog</button>
             </Link>

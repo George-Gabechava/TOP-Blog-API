@@ -44,20 +44,16 @@ function App() {
 
   // Update Navigation Bar depending on user permissions.
   let panel;
-  let content;
   if (isLoggedIn === true) {
     panel = <VisitorPanel onAuthChange={handleAuthChange} />;
-    content = <h3>You are logged in.</h3>;
   } else {
     panel = <LogInPanel onAuthChange={handleAuthChange} />;
-    content = <h3>You are not logged in.</h3>;
   }
 
   return (
     <BrowserRouter>
       <div>
         {panel}
-        {content}
 
         {/* Routes for content swapping */}
         <Routes>
@@ -72,7 +68,12 @@ function App() {
           />
           <Route
             path="/blogView/:id"
-            element={<BlogView onAuthChange={handleAuthChange} />}
+            element={
+              <BlogView
+                onAuthChange={handleAuthChange}
+                isLoggedIn={isLoggedIn}
+              />
+            }
           />
         </Routes>
 

@@ -8,3 +8,9 @@
   border: solid 1px gray;
   border-radius: 25px;
 }
+
+#summary {
+  width: 75vw;
+  min-height: 3em;
+  margin: 1em 0em;
+}

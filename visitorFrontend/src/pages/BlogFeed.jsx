@@ -34,7 +34,7 @@ function BlogFeed({ onAuthChange }) {
         {posts.map((post) => (
           <div key={post.id} id={post.id} className="postCard">
             <h2>{post.name}</h2>
-            <h3>Tags: {post.tags ? post.tags.join(", ") : ""}</h3>
+            <b>Tags: {post.tags ? post.tags.join(", ") : ""}</b>
             <p>
               Published:{" "}
               {new Date(post.createdAt).toLocaleString("en-US", {
@@ -43,14 +43,16 @@ function BlogFeed({ onAuthChange }) {
                 dateStyle: "short",
               })}
             </p>
-            <p>
+            {/* Commenting out Updated as it isn't informative at the moment */}
+            {/* <p>
               Updated:{" "}
               {new Date(post.updatedAt).toLocaleString("en-US", {
                 timeZone: "America/New_York",
                 timeStyle: "short",
                 dateStyle: "short",
               })}
-            </p>
+            </p> */}
+            <p className="summaryContainer">{post.summary}</p>
             <Link to={`/blogView/${post.id}`}>
               <button>View Blog</button>
             </Link>

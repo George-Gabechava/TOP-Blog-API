@@ -1,0 +1,17 @@
+.blogMessage {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.commentForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.commentBox {
+  width: 75vw;
+  min-height: 3em;
+  margin-bottom: 1em;
+}
