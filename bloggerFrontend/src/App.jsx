@@ -77,7 +77,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <div id="bodyContainer">
         {panel}
         {content}
         {/* Routes for content swapping */}

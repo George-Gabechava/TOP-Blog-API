@@ -1,29 +1,37 @@
 import { Link } from "react-router-dom";
 import "./LogInPanel.css";
 
+// Assets
+import home from "../assets/home.svg";
+
 function LogInPanel({ onAuthChange }) {
   function handleLogout() {
     localStorage.removeItem("auth_token");
     onAuthChange(false);
     window.location.assign("/");
   }
-
   return (
     <div id="LogInPanel">
-      <div id="logInButtons">
+      <div id="navigationButtons">
         <Link to="/">
-          <button>*Home Page Icon</button>
+          <button id="homeButton">
+            <img id="homeIcon" src={home} className="logo" alt="Home Icon" />
+          </button>
         </Link>
-        <button>Button/Mobile Drop</button>
+        <Link to="/">
+          <button id="blogButton">Blogs</button>
+        </Link>
       </div>
       <div id="logInButtons">
         <Link to="/signUp">
-          <button>Create Account</button>
+          <button>Sign Up</button>
         </Link>
         <Link to="/login">
-          <button>Log In</button>
+          <button id="logInButton">Log In</button>
         </Link>
-        <button onClick={handleLogout}>Log Out</button>
+        <button id="logOutButton" onClick={handleLogout}>
+          Log Out
+        </button>
       </div>
     </div>
   );

@@ -6,7 +6,9 @@
   background-color: #4e94ff;
 }
 
-#blogButton,
-#homePageButton {
-  margin-right: 1em;
+/* Tablet/Desktop Screens */
+@media (min-width: 750px) {
+  #homeButton {
+    width: 10vw;
+  }
 }

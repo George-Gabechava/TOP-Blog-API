@@ -1,6 +1,0 @@
-#AdminPanel {
-  display: flex;
-  justify-content: space-between;
-
-  width: calc(95vw - 4rem);
-}

@@ -4,29 +4,28 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  padding: 2em;
 }
 
 .postCard {
   border: solid gray 1px;
   border-radius: 1em;
   padding: 1em;
-  width: 30vw;
-  height: 33vh;
+  min-height: 33vh;
   color: black;
 }
 
-h2 {
+.postCard h2 {
   margin-top: 0px;
   margin-bottom: 0.5em;
 }
 
 .summaryContainer {
   width: 100%;
-  max-height: 7.5rem;
+  max-height: 9em;
   text-overflow: clip;
   overflow: hidden;
   margin-top: 1em;
+  border-top: solid gray 1px;
 }
 
 .postCard:hover {
@@ -34,4 +33,15 @@ h2 {
   border: solid black 1px;
   background: lightgray;
   transition: background 0.25s ease-in-out;
+}
+
+/* Tablet/Desktop Screens */
+@media (min-width: 750px) {
+  .postCard {
+    width: 30vw;
+  }
+
+  .summaryContainer {
+    max-height: 7.5em;
+  }
 }

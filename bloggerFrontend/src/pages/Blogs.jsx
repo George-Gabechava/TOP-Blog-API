@@ -139,12 +139,15 @@ function Blogs({ onAuthChange }) {
               })}
             </p>
             <p className="summaryContainer">{post.summary}</p>
-            <Link to={`/blogDetail/${post.id}`}>
-              <button>Edit Blog</button>
-            </Link>
-            <button type="button" onClick={() => deletePost(post.id)}>
-              Delete Blog
-            </button>
+
+            <div className="detailButtons">
+              <Link to={`/blogDetail/${post.id}`}>
+                <button>Edit Blog</button>
+              </Link>
+              <button type="button" onClick={() => deletePost(post.id)}>
+                Delete Blog
+              </button>
+            </div>
           </div>
         ))}
       </div>

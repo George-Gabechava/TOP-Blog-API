@@ -1,26 +1,43 @@
 import "./Footer.css";
 
+// Assets
+import linkedin from "../assets/linkedin.svg";
+import github from "../assets/github.png";
+
 function Footer() {
   return (
-    <footer>
+    <aside>
       <p>
         Website made by
-        <a href="https://www.linkedin.com/in/George-Gabechava/">
+        <a
+          class="fancyText"
+          href="https://www.linkedin.com/in/George-Gabechava/"
+        >
           {" "}
-          George Gabechava
+          George Gabechava{" "}
+          <img
+            id="linkedinIcon"
+            src={linkedin}
+            className="logo"
+            alt="LinkedIn Icon"
+          />
         </a>
-        .
       </p>
       <p>
-        <a href="https://github.com/George-Gabechava/TOP-Blog-API">
-          Github Source Code
+        <a
+          class="fancyText"
+          href="https://github.com/George-Gabechava/TOP-Blog-API"
+        >
+          <img
+            id="githubIcon"
+            src={github}
+            className="logo"
+            alt="Github Icon"
+          />{" "}
+          Github Source Code.
         </a>
-        .
       </p>
-      <p>
-        Hosted by <a href="https://railway.com/">Railway</a>.
-      </p>
-    </footer>
+    </aside>
   );
 }
 export default Footer;

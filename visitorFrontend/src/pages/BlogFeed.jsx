@@ -27,7 +27,7 @@ function BlogFeed({ onAuthChange }) {
   }, []);
 
   return (
-    <div>
+    <div className="blogViewContainer">
       <h1>Recent Blogs</h1>
 
       <div id="postsContainer">

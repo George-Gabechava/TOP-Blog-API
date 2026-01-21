@@ -2,10 +2,51 @@
   display: flex;
   justify-content: space-between;
 
-  width: calc(95vw - 4rem);
+  padding: 2em;
+  background-color: #4e94ff;
+
+  height: 10vh;
+}
+
+#navigationButtons {
+  display: flex;
 }
 
 #logInButtons {
   display: flex;
   justify-content: flex-end;
+}
+
+button {
+  width: 17vw;
+  height: 100%;
+  padding: 0.3em 0.6em;
+  margin-right: 0.75em;
+}
+
+#homeButton {
+  padding: 0;
+}
+
+#homeIcon {
+  height: 100%;
+}
+
+#logInButton {
+  margin-right: 0em;
+}
+
+/* Tablet/Desktop Screens */
+@media (min-width: 750px) {
+  button {
+    height: 90%;
+    padding: 0.6em 1.2em;
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  #blogButton,
+  #homeButton {
+    margin-right: 1em;
+  }
 }

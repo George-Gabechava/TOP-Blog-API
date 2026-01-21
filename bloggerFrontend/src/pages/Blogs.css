@@ -11,7 +11,7 @@
   border-radius: 1em;
   padding: 1em;
   width: 30vw;
-  height: calc(33vh + 88px);
+  min-height: 33vh;
   color: black;
 }
 
@@ -26,4 +26,13 @@ h2 {
   text-overflow: clip;
   overflow: hidden;
   margin-top: 1em;
+}
+
+.detailButtons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.detailButtons button {
+  height: 100%;
 }

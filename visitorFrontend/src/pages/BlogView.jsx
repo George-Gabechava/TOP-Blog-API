@@ -117,11 +117,16 @@ function BlogView({ onAuthChange, isLoggedIn }) {
       </div>
     );
   } else {
-    content = <h3>Log in to comment.</h3>;
+    content = (
+      <div id="commentSubmitContainer">
+        <h3>Log in to comment.</h3>
+        <textarea id="commentContent" rows="2" />
+      </div>
+    );
   }
 
   return (
-    <div id="blogViewContainer">
+    <div className="blogViewContainer">
       <h1>{post.name}</h1>
       <h3 className="blogTags">
         Tags:&nbsp;

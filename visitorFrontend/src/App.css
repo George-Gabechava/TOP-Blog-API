@@ -11,5 +11,31 @@
 
 #contentContainer {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+}
+
+.logo,
+button,
+.postCard {
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover,
+button:hover,
+.fancyText:hover {
+  filter: drop-shadow(0 0 2em darkblue);
+}
+.logo.react:hover,
+button:hover,
+.fancyText:hover {
+  filter: drop-shadow(0 0 2em blue);
+}
+
+/* Tablet/Desktop Screens */
+@media (min-width: 750px) {
+  #contentContainer {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+  }
 }

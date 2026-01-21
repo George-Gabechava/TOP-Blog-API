@@ -2,5 +2,5 @@
   display: flex;
   justify-content: space-between;
 
-  width: calc(95vw - 4rem);
+  padding: 2em;
 }
