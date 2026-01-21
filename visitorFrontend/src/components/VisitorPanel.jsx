@@ -14,11 +14,14 @@ function AdminPanel({ onAuthChange }) {
     <div id="AdminPanel">
       <div id="logInButtons">
         <Link to="/">
-          <img src={home} id="homeButton" alt="Home" className="logo" />
+          <button id="homeButton">
+            <img id="homeIcon" src={home} alt="Home Icon" />
+          </button>
         </Link>
-        <Link to="/">
+        {/* Commenting out blogs button until new home page is added */}
+        {/* <Link to="/">
           <button id="blogButton">Blogs</button>
-        </Link>
+        </Link> */}
       </div>
 
       <div id="logInButtons">

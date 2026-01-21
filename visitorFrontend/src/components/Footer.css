@@ -3,13 +3,12 @@ aside {
   flex-direction: column;
   align-items: center;
 
-  margin-top: 2em;
-  margin-right: 0.5em;
+  margin-top: 1em;
+  margin-right: 1em;
   margin-left: 1em;
   margin-bottom: 2em;
 
-  padding: 0.5em;
-  padding-right: 1em;
+  padding: 1.5em;
 
   background-color: #f9f9f9;
   border-radius: 2em;
@@ -17,14 +16,37 @@ aside {
   position: sticky;
   top: 5vh;
 
-  height: 90vh;
+  /* box-sizing: border-box; */
+  width: auto;
+  /* Prevent flex parents from shrinking/growing this aside by default */
+  /* flex: 0 0 auto; */
 }
 
 #linkedinIcon,
 #githubIcon {
-  height: 2em;
+  height: 3em;
+  width: 3em;
 }
 
 aside p {
   text-align: center;
+  font-size: large;
+}
+
+.fancyText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tablet/Desktop Screens */
+@media (min-width: 750px) {
+  aside {
+    height: 90vh;
+    width: 300px;
+    /* Fix width so it doesn't change with viewport */
+    flex: 0 0 300px;
+    margin-right: 2em;
+    margin-top: 2em;
+  }
 }

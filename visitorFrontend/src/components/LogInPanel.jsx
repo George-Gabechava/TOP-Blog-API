@@ -13,9 +13,10 @@ function LogInPanel({ onAuthChange }) {
             <img id="homeIcon" src={home} className="logo" alt="Home Icon" />
           </button>
         </Link>
-        <Link to="/">
+        {/* Commenting out blogs button until new home page is added */}
+        {/* <Link to="/">
           <button id="blogButton">Blogs</button>
-        </Link>
+        </Link> */}
       </div>
       <div id="logInButtons">
         <Link to="/signUp">

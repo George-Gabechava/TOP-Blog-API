@@ -2,10 +2,10 @@
   display: flex;
   justify-content: space-between;
 
-  padding: 2em;
+  padding: 1.5em;
   background-color: #4e94ff;
 
-  height: 10vh;
+  height: 8vh;
 }
 
 #navigationButtons {
@@ -25,6 +25,9 @@ button {
 }
 
 #homeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
 }
 

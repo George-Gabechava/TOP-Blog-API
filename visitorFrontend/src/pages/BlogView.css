@@ -23,8 +23,6 @@
 
 .blogViewContainer {
   margin: 1em;
-  width: 67vw;
-  margin-left: 3em;
 }
 
 .blogViewContainer h2 {
@@ -35,4 +33,11 @@
 #commentSubmitContainer {
   border: solid grey 1px;
   border-radius: 1em;
+}
+
+/* Tablet/Desktop Screens */
+@media (min-width: 750px) {
+  .blogViewContainer {
+    margin-left: 3em;
+  }
 }

@@ -7,6 +7,9 @@
 }
 
 .postCard {
+  display: flex;
+  flex-direction: column;
+
   border: solid gray 1px;
   border-radius: 1em;
   padding: 1em;
