@@ -264,7 +264,6 @@ function BlogDetail({ onAuthChange }) {
               "visualblocks",
               "wordcount",
               // The most popular premium features:
-              // Uncomment below if you have access to these features.
               "checklist",
               "mediaembed",
               "casechange",

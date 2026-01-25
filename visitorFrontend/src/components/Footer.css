@@ -16,10 +16,8 @@ aside {
   position: sticky;
   top: 5vh;
 
-  /* box-sizing: border-box; */
   width: auto;
-  /* Prevent flex parents from shrinking/growing this aside by default */
-  /* flex: 0 0 auto; */
+  border: solid 1px gray;
 }
 
 #linkedinIcon,
