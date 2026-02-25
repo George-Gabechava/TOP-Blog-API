@@ -15,14 +15,9 @@ export default defineConfig({
     host: true,
     port: 4174,
     strictPort: true,
-    allowedHosts: ["top-blog-api-visitorfrontend-production.up.railway.app"],
+    allowedHosts: ["georgesblog.up.railway.app"],
   },
   build: {
-    // generate .vite/manifest.json in outDir
     manifest: true,
-    rollupOptions: {
-      // overwrite default .html entry
-      // input: "/path",
-    },
   },
 });

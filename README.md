@@ -8,7 +8,7 @@ The tech stack used includes PostgreSQL with Prisma ORM, Express, React/Vite, & 
 
 A TinyMCE API key (free) is required for blogging in the bloggerFrontend project variables. TinyMCE premium features/plugins can be enabled (uncommented) in the Editor located in /bloggerFrontend/src/pages/BlogDetail.jsx (lines 268-293). Add your site to your TinyMCE approved domain list: https://www.tiny.cloud/my-account/domains/ .
 
-Site Link: https://top-blog-api-visitorfrontend-production.up.railway.app/
+Site Link: https://georgesblog.up.railway.app/
 
 <p align="center">
   <img 
