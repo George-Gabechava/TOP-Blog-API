@@ -10,6 +10,19 @@
 
 #navigationButtons {
   display: flex;
+  align-items: center;
+}
+
+#personalSiteLink {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.75em;
+}
+
+#personalSiteLogo {
+  height: 45px;
+  width: auto;
+  display: block;
 }
 
 #logInButtons {

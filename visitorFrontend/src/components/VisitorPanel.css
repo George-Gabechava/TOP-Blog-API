@@ -1,11 +1,24 @@
 #AdminPanel {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   padding: 1.5em;
   background-color: #4e94ff;
 
   height: 8vh;
+}
+
+#personalSiteLink {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.75em;
+}
+
+#personalSiteLogo {
+  height: 45px;
+  width: auto;
+  display: block;
 }
 
 /* Tablet/Desktop Screens */
