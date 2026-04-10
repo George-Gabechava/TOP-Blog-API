@@ -9,18 +9,6 @@
   height: 8vh;
 }
 
-#personalSiteLink {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 0.75em;
-}
-
-#personalSiteLogo {
-  height: 45px;
-  width: auto;
-  display: block;
-}
-
 /* Tablet/Desktop Screens */
 @media (min-width: 750px) {
   #homeButton {

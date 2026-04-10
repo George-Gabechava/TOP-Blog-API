@@ -31,6 +31,19 @@ button:hover,
   filter: drop-shadow(0 0 2em blue);
 }
 
+/* Shared panel styles */
+#personalSiteLink {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.75em;
+}
+
+#personalSiteLogo {
+  height: 45px;
+  width: auto;
+  display: block;
+}
+
 /* Tablet/Desktop Screens */
 @media (min-width: 750px) {
   #contentContainer {
