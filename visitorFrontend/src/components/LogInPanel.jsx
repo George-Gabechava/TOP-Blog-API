@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./LogInPanel.css";
 
 // Assets
-import home from "../assets/home.svg";
+import gg2Logo from "../assets/GG2.png";
 
 const personalSiteUrl = import.meta.env.VITE_PERSONAL_SITE_URL;
 
@@ -18,18 +18,16 @@ function LogInPanel({ onAuthChange }) {
             rel="noopener noreferrer"
             title="Visit personal site"
           >
-            <img id="personalSiteLogo" src="/GG2.png" alt="Visit personal site" />
+            <img
+              id="personalSiteLogo"
+              src={gg2Logo}
+              alt="Visit personal site"
+            />
           </a>
         )}
-        <Link to="/">
-          <button id="homeButton">
-            <img id="homeIcon" src={home} className="logo" alt="Home Icon" />
-          </button>
+        <Link to="/" className="blogLink">
+          Blogs
         </Link>
-        {/* Commenting out blogs button until new home page is added */}
-        {/* <Link to="/">
-          <button id="blogButton">Blogs</button>
-        </Link> */}
       </div>
       <div id="logInButtons">
         <Link to="/signUp">

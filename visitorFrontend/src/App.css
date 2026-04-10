@@ -35,13 +35,33 @@ button:hover,
 #personalSiteLink {
   display: inline-flex;
   align-items: center;
+  height: 100%;
   margin-right: 0.75em;
 }
 
 #personalSiteLogo {
-  height: 45px;
+  height: 100%;
   width: auto;
   display: block;
+}
+
+.blogLink {
+  color: #002244;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5em;
+}
+
+.blogLink:visited,
+.blogLink:active {
+  color: black;
+}
+
+.blogLink:hover {
+  filter: drop-shadow(0 0 2em darkblue);
 }
 
 /* Tablet/Desktop Screens */
@@ -50,5 +70,9 @@ button:hover,
     display: flex;
     justify-content: space-around;
     flex-direction: row;
+  }
+
+  .blogLink {
+    font-size: x-large;
   }
 }
