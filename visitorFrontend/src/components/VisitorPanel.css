@@ -1,7 +1,6 @@
 #AdminPanel {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 
   padding: 1.5em;
   background-color: #4e94ff;

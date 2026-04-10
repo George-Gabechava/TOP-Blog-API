@@ -11,12 +11,15 @@ const app = express();
 // CORS setup
 const FRONTEND_URL1 = process.env.FRONTEND_URL1;
 const FRONTEND_URL2 = process.env.FRONTEND_URL2;
+const FRONTEND_URL3 = process.env.FRONTEND_URL3;
 const corsOptions = {
   origin: [
+    "http://localhost:5173",
     "http://localhost:4173",
     "http://localhost:4174",
     FRONTEND_URL1,
     FRONTEND_URL2,
+    FRONTEND_URL3,
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
@@ -25,7 +28,6 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
-app.options(/"*"/, cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

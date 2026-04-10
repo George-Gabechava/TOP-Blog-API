@@ -13,6 +13,11 @@
   align-items: center;
 }
 
+#personalSiteLogo {
+  height: 5vh;
+  width: auto;
+}
+
 #logInButtons {
   display: flex;
   justify-content: flex-end;
