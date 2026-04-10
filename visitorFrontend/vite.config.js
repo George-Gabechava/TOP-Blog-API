@@ -15,7 +15,7 @@ export default defineConfig({
     host: true,
     port: 4174,
     strictPort: true,
-    allowedHosts: ["georgesblog.up.railway.app"],
+    allowedHosts: ["georgesblog.up.railway.app", "blog.georgegabechava.com"],
   },
   build: {
     manifest: true,
